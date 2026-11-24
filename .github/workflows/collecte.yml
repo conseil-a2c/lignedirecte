@@ -1,0 +1,35 @@
+name: Collecte quotidienne des offres
+
+on:
+  schedule:
+    - cron: "4 5 * * *"
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+concurrency:
+  group: collecte
+  cancel-in-progress: false
+
+jobs:
+  collecte:
+    runs-on: ubuntu-latest
+    timeout-minutes: 150
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - name: Collecter les offres
+        run: |
+          python3 -I scripts/harvest.py /tmp/offres.json scripts/recherches.json --par-dept 40 --par-recherche 120 --jobs 3
+          python3 -I -c "import json,os,sys; d=json.load(open('/tmp/offres.json')); n=len(d['ciblees'])+len(d['offres']); print('offres:',n); sys.exit(0 if n>1000 and os.path.getsize('/tmp/offres.json')>500000 else 1)"
+          cp /tmp/offres.json data/offres.json
+      - name: Publier
+        run: |
+          git config user.name "collecte-automatique"
+          git config user.email "actions@users.noreply.github.com"
+          git add data/offres.json
+          git diff --cached --quiet || git commit -m "Offres du $(date +%Y-%m-%d)"
+          git push
