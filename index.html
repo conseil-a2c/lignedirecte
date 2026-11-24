@@ -1,0 +1,1206 @@
+<!doctype html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="robots" content="noindex">
+<link rel="apple-touch-icon" href="icon.png">
+<style>body{margin:0}[hidden]{display:none!important}:root{padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}</style>
+</head>
+<body>
+<title>Ligne Directe Emploi</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,600;12..96,800&family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@500&display=swap">
+<style>
+/* Layout: en-tête compact + onglets ; liste d'offres à gauche, dossier de candidature en panneau latéral (plein écran sur mobile) */
+:root{
+  --bg:#f3f5f4; --panel:#ffffff; --ink:#14201b; --muted:#5b6b64; --line:#d9e1dd;
+  --accent:#0b7a55; --accent-ink:#ffffff; --accent-soft:#e1f2ea; --signal:#c2410c; --signal-soft:#fdebe3;
+  --warn:#8a5a00; --warn-soft:#fbf1d9; --info:#1d4ed8; --info-soft:#e3ebfd; --shade:rgba(10,20,15,.45);
+  --display:"Bricolage Grotesque","Segoe UI",system-ui,sans-serif;
+  --body:"Inter",system-ui,-apple-system,sans-serif;
+  --mono:"JetBrains Mono",ui-monospace,Menlo,monospace;
+}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]){
+  --bg:#0f1513; --panel:#17201c; --ink:#e7eeea; --muted:#9aaca4; --line:#2a3832;
+  --accent:#3ccf95; --accent-ink:#06261a; --accent-soft:#163327; --signal:#ff8a5c; --signal-soft:#3a2219;
+  --warn:#e5b54a; --warn-soft:#352b14; --info:#8fb0ff; --info-soft:#1a2440; --shade:rgba(0,0,0,.6); color-scheme:dark}}
+:root[data-theme="dark"]{
+  --bg:#0f1513; --panel:#17201c; --ink:#e7eeea; --muted:#9aaca4; --line:#2a3832;
+  --accent:#3ccf95; --accent-ink:#06261a; --accent-soft:#163327; --signal:#ff8a5c; --signal-soft:#3a2219;
+  --warn:#e5b54a; --warn-soft:#352b14; --info:#8fb0ff; --info-soft:#1a2440; --shade:rgba(0,0,0,.6); color-scheme:dark}
+*{box-sizing:border-box}
+body{background:var(--bg);color:var(--ink);font-family:var(--body);font-size:15px;line-height:1.5}
+.wrap{max-width:1120px;margin:0 auto;padding-block:22px 64px;padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px))}
+header.top{display:flex;flex-wrap:wrap;align-items:flex-end;justify-content:space-between;gap:14px;margin-bottom:16px}
+h1{font-family:var(--display);font-weight:800;font-size:clamp(28px,5vw,40px);line-height:1;margin:0;letter-spacing:-.02em}
+h1 .dot{color:var(--accent)}
+.sub{color:var(--muted);margin:6px 0 0;max-width:62ch;font-size:14px}
+.kpi{display:flex;gap:8px;flex-wrap:wrap}
+.chip{font-family:var(--mono);font-size:12px;padding:6px 10px;border-radius:999px;background:var(--panel);border:1px solid var(--line);font-variant-numeric:tabular-nums;white-space:nowrap}
+.chip b{color:var(--accent)} .chip.hot b{color:var(--signal)}
+nav.tabs{display:flex;gap:2px;overflow-x:auto;border-bottom:1px solid var(--line);margin-bottom:18px;scrollbar-width:none}
+nav.tabs button{font:600 14px var(--body);background:none;border:0;color:var(--muted);padding:10px 13px;border-bottom:3px solid transparent;cursor:pointer;white-space:nowrap}
+nav.tabs button[aria-selected="true"]{color:var(--ink);border-color:var(--accent)}
+nav.tabs .badge{display:inline-block;min-width:18px;padding:0 5px;margin-left:4px;border-radius:9px;background:var(--signal);color:#fff;font-size:11px;line-height:18px;text-align:center}
+:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+.panel{background:var(--panel);border:1px solid var(--line);border-radius:12px;padding:18px;min-width:0}
+h2{font-family:var(--display);font-weight:600;font-size:20px;margin:0 0 4px}
+h3{font-family:var(--display);font-weight:600;font-size:16px;margin:0 0 6px}
+.hint{color:var(--muted);font-size:13.5px;margin:0 0 12px}
+label{display:block;font-size:11.5px;font-weight:600;text-transform:uppercase;letter-spacing:.06em;color:var(--muted);margin-bottom:5px}
+.f{display:flex;flex-direction:column;gap:12px}
+.row{display:flex;gap:10px;flex-wrap:wrap}.row>*{flex:1 1 150px;min-width:0}
+input,textarea,select{width:100%;font:inherit;color:var(--ink);background:var(--bg);border:1px solid var(--line);border-radius:8px;padding:9px 11px}
+textarea{resize:vertical;min-height:110px;font-size:14px}
+.btn{font:600 14px var(--body);border:0;border-radius:8px;padding:9px 15px;cursor:pointer;background:var(--accent);color:var(--accent-ink);text-decoration:none;display:inline-flex;align-items:center;gap:6px;justify-content:center}
+.btn.ghost{background:transparent;color:var(--ink);border:1px solid var(--line)}
+.btn.sm{padding:6px 10px;font-size:13px}
+.btn:disabled{opacity:.5;cursor:wait}
+.toolbar{display:flex;gap:8px;flex-wrap:wrap;align-items:center}
+.out{white-space:pre-wrap;background:var(--bg);border:1px solid var(--line);border-radius:8px;padding:13px;font-size:14px;min-height:56px;overflow-wrap:anywhere}
+.out.empty{color:var(--muted);font-style:italic}
+.note{font-size:13px;color:var(--ink);border-left:3px solid var(--warn);padding:8px 12px;background:var(--warn-soft);border-radius:0 6px 6px 0}
+.mt{margin-top:14px}
+/* filtres */
+.filters{display:grid;grid-template-columns:2fr 1.2fr 1fr 1fr;gap:10px;align-items:end}
+@media (max-width:760px){.filters{grid-template-columns:1fr 1fr}}
+.meta{display:flex;flex-wrap:wrap;gap:8px;align-items:center;justify-content:space-between;margin:14px 0 10px;font-size:13px;color:var(--muted)}
+.live{display:inline-flex;align-items:center;gap:6px}.live i{width:8px;height:8px;border-radius:50%;background:var(--accent)}
+/* offres */
+.list{display:flex;flex-direction:column;gap:10px}
+.offer{background:var(--panel);border:1px solid var(--line);border-radius:12px;padding:14px 16px;display:grid;grid-template-columns:1fr auto;gap:6px 16px;min-width:0}
+.offer:hover{border-color:var(--accent)}
+.offer h3{font-family:var(--body);font-weight:600;font-size:16px;margin:0;overflow-wrap:anywhere}
+.offer .co{color:var(--muted);font-size:13.5px}
+.offer .co b{color:var(--ink);font-weight:600}
+.offer p{margin:2px 0 0;font-size:13.5px;color:var(--muted);grid-column:1/-1;overflow-wrap:anywhere}
+.offer .side{display:flex;flex-direction:column;align-items:flex-end;gap:6px}
+.offer .acts{grid-column:1/-1;display:flex;gap:8px;flex-wrap:wrap;margin-top:6px}
+@media (max-width:560px){.offer{grid-template-columns:1fr}.offer .side{flex-direction:row;align-items:center}}
+.tag{display:inline-block;font-family:var(--mono);font-size:11px;padding:2px 7px;border-radius:4px;background:var(--accent-soft);color:var(--accent);white-space:nowrap}
+.tag.hot{background:var(--signal-soft);color:var(--signal)} .tag.info{background:var(--info-soft);color:var(--info)} .tag.mut{background:var(--bg);color:var(--muted);border:1px solid var(--line)}
+.empty-state{padding:30px;text-align:center;color:var(--muted);background:var(--panel);border:1px dashed var(--line);border-radius:12px}
+/* tiroir */
+.shade{position:fixed;inset:0;background:var(--shade);z-index:20}
+.drawer{position:fixed;top:0;right:0;bottom:0;width:min(640px,100%);background:var(--bg);z-index:21;overflow-y:auto;border-left:1px solid var(--line);
+  padding-top:calc(18px + env(safe-area-inset-top,0px));padding-bottom:calc(40px + env(safe-area-inset-bottom,0px));padding-left:max(18px,env(safe-area-inset-left,0px));padding-right:max(18px,env(safe-area-inset-right,0px))}
+.drawer .head{display:flex;justify-content:space-between;gap:12px;align-items:flex-start;margin-bottom:12px}
+.drawer h2{font-size:22px;overflow-wrap:anywhere}
+.step{background:var(--panel);border:1px solid var(--line);border-radius:12px;padding:16px;margin-top:12px}
+.step .n{font-family:var(--mono);font-size:11px;color:var(--accent);letter-spacing:.08em;text-transform:uppercase;display:block;margin-bottom:4px}
+.contact{display:grid;grid-template-columns:repeat(auto-fit,minmax(170px,1fr));gap:8px}
+.contact a,.contact .c{display:flex;flex-direction:column;gap:2px;padding:10px 12px;border:1px solid var(--line);border-radius:8px;text-decoration:none;color:var(--ink);background:var(--bg);min-width:0;overflow-wrap:anywhere}
+.contact a:hover{border-color:var(--accent)}
+.contact b{font-size:13.5px}.contact span{font-size:12px;color:var(--muted)}
+.contact .prime{border-color:var(--accent);background:var(--accent-soft)}
+.emails{font-family:var(--mono);font-size:12.5px;display:flex;flex-direction:column;gap:5px}
+.emails div{display:flex;justify-content:space-between;gap:8px;align-items:center;padding:5px 9px;background:var(--bg);border-radius:6px;border:1px solid var(--line);overflow-wrap:anywhere}
+.score{display:flex;align-items:center;gap:14px;margin:4px 0 10px}
+.gauge{font-family:var(--display);font-weight:800;font-size:38px;line-height:1;font-variant-numeric:tabular-nums}
+.bar{flex:1;height:9px;background:var(--line);border-radius:99px;overflow:hidden}.bar i{display:block;height:100%;background:var(--accent);width:0;transition:width .4s}
+.kw{display:flex;flex-wrap:wrap;gap:5px}
+.kw span{font-size:12px;padding:2px 8px;border-radius:99px}
+.kw .ok{background:var(--accent-soft);color:var(--accent)} .kw .ko{background:var(--signal-soft);color:var(--signal)}
+/* suivi */
+.pipe{display:grid;grid-template-columns:repeat(auto-fit,minmax(120px,1fr));gap:8px;margin-bottom:14px}
+.pipe button{background:var(--panel);border:1px solid var(--line);border-radius:10px;padding:10px;text-align:left;cursor:pointer;color:var(--ink);font:inherit}
+.pipe button[aria-pressed="true"]{border-color:var(--accent);box-shadow:inset 0 0 0 1px var(--accent)}
+.pipe b{display:block;font-family:var(--display);font-size:24px;font-variant-numeric:tabular-nums}
+.pipe span{font-size:12px;color:var(--muted)}
+.app{background:var(--panel);border:1px solid var(--line);border-radius:12px;padding:14px 16px;display:grid;grid-template-columns:1fr minmax(180px,230px);gap:10px 16px;border-left-width:4px}
+.app[data-s="envoyee"]{border-left-color:var(--muted)} .app[data-s="relancer"],.app[data-s="rappeler"]{border-left-color:var(--warn)}
+.app[data-s="entretien"]{border-left-color:var(--accent)} .app[data-s="pourvu"],.app[data-s="refus"]{border-left-color:var(--signal)}
+@media (max-width:620px){.app{grid-template-columns:1fr}}
+.app .co{color:var(--muted);font-size:13.5px;overflow-wrap:anywhere}
+.app .due{color:var(--signal);font-weight:600;font-size:13px}
+.app .next{font-size:13px}
+.app details{grid-column:1/-1}
+.app summary{cursor:pointer;font-size:13px;color:var(--muted)}
+/* modèles / entretien */
+.cards{display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:12px}
+.tpl .out{font-size:13.5px}
+.qa{border-top:1px solid var(--line);padding:10px 0}
+.qa summary{cursor:pointer;font-weight:600}
+.qa p{margin:6px 0 0;color:var(--muted);font-size:14px}
+.chat{display:flex;flex-direction:column;gap:8px;max-height:460px;overflow-y:auto;padding:4px}
+.msg{padding:10px 12px;border-radius:10px;max-width:88%;white-space:pre-wrap;font-size:14px;overflow-wrap:anywhere}
+.msg.ai{background:var(--accent-soft);align-self:flex-start}
+.msg.me{background:var(--info-soft);align-self:flex-end}
+.toast{position:fixed;left:50%;bottom:calc(20px + env(safe-area-inset-bottom,0px));transform:translateX(-50%);background:var(--ink);color:var(--bg);padding:10px 16px;border-radius:8px;font-size:14px;opacity:0;transition:opacity .2s;pointer-events:none;z-index:40}
+.toast.on{opacity:1}
+@media (prefers-reduced-motion:reduce){*{transition:none!important}}
+</style>
+<style>
+.drop{border:2px dashed var(--line);border-radius:12px;padding:22px;text-align:center;background:var(--bg);cursor:pointer}
+.drop:hover,.drop.on{border-color:var(--accent);background:var(--accent-soft)}
+.drop b{display:block;font-size:16px;margin-bottom:4px}
+.ana{display:grid;gap:10px}
+.ana .pill{display:inline-block;padding:4px 10px;border-radius:99px;background:var(--accent-soft);color:var(--accent);font-size:13px;font-weight:600;margin:0 6px 6px 0;cursor:pointer;border:0;font-family:var(--body)}
+.ana ul{margin:4px 0 0;padding-left:18px;font-size:14px}
+.reco{background:var(--accent-soft);border:1px solid var(--accent);border-radius:12px;padding:14px 16px;margin-bottom:12px;display:flex;gap:12px;align-items:center;justify-content:space-between;flex-wrap:wrap}
+.match{font-family:var(--mono);font-size:11px;padding:2px 7px;border-radius:4px;background:var(--accent);color:var(--accent-ink)}
+.seg{display:flex;flex-wrap:wrap;gap:6px}
+.seg button{font:600 13px var(--body);padding:7px 12px;border-radius:99px;border:1px solid var(--line);background:var(--panel);color:var(--ink);cursor:pointer}
+.seg button[aria-pressed="true"]{background:var(--ink);color:var(--bg);border-color:var(--ink)}
+.qcat{margin-top:14px}
+.qcat h3{font-size:14px;text-transform:uppercase;letter-spacing:.06em;color:var(--muted);font-family:var(--body)}
+.qa .out{margin-top:8px}
+.coachbox{display:flex;flex-direction:column;gap:10px}
+</style>
+<div class="wrap">
+<header class="top">
+  <div>
+    <h1>Ligne Directe<span class="dot">.</span></h1>
+    <p class="sub">Postes en CDD, CDI et intérim dans le 06, à Monaco et en télétravail, missions en indépendante, organismes de formation à démarcher et certificateurs qui recrutent des jurés. Votre CV est analysé, réécrit pour chaque offre et chaque démarche est suivie.</p>
+  </div>
+  <div class="kpi">
+    <span class="chip">Offres <b id="kOffres">…</b></span>
+    <span class="chip">Candidatures <b id="kTotal">0</b></span>
+    <span class="chip hot">À faire aujourd'hui <b id="kDue">0</b></span>
+    <span class="chip">Entretiens <b id="kInt">0</b></span>
+  </div>
+</header>
+
+<nav class="tabs" role="tablist">
+  <button role="tab" data-t="offres" aria-selected="true">Postes CDD / CDI</button>
+  <button role="tab" data-t="indep" aria-selected="false">Indépendante</button>
+  <button role="tab" data-t="profil" aria-selected="false">Mon CV</button>
+  <button role="tab" data-t="suivi" aria-selected="false">Suivi &amp; relances<span class="badge" id="tabDue" hidden>0</span></button>
+  <button role="tab" data-t="modeles" aria-selected="false">Messages</button>
+  <button role="tab" data-t="entretien" aria-selected="false">Préparer l'entretien</button>
+</nav>
+
+<!-- OFFRES -->
+<section data-p="offres">
+  <div class="reco" id="recoBox" hidden>
+    <div><b id="recoTitle">Offres pour votre profil</b><div class="hint" style="margin:2px 0 0" id="recoTxt"></div></div>
+    <button class="btn sm" id="recoBtn">Voir les offres pour moi</button>
+  </div>
+  <div class="reco" id="cvNudge" style="background:var(--warn-soft);border-color:var(--warn)">
+    <div><b>Importez votre CV</b><div class="hint" style="margin:2px 0 0">Il sera analysé : métiers conseillés, offres classées par correspondance, CV réécrit pour chaque offre.</div></div>
+    <button class="btn sm" id="nudgeBtn">Importer mon CV</button>
+  </div>
+  <div class="panel">
+    <div class="filters">
+      <div><label for="fq">Métier, mot-clé, entreprise</label><input id="fq" placeholder="ex. vendeur, comptable, serveur…"></div>
+      <div><label for="fd">Zone</label><select id="fd"></select></div>
+      <div><label for="fc">Contrat</label><select id="fc"><option value="">Tous</option><option value="CDI">CDI</option><option value="CDD">CDD</option><option value="Intérim">Intérim</option><option value="tt">Télétravail</option></select></div>
+      <div><label for="fs">Trier / afficher</label><select id="fs"><option value="">Plus récentes</option><option value="pourmoi">Pour mon CV (meilleure correspondance)</option><option value="direction">Postes de direction</option><option value="salaire">Meilleure rémunération</option><option value="today">Publiées aujourd'hui</option><option value="direct">Avec candidature directe</option></select></div>
+    </div>
+  </div>
+  <div class="meta"><span class="live"><i></i><span id="majTxt">Chargement des offres…</span></span><span id="countTxt"></span></div>
+  <div class="list" id="list"></div>
+  <div class="toolbar mt" style="justify-content:center"><button class="btn ghost" id="moreBtn" hidden>Afficher plus d'offres</button></div>
+</section>
+
+<!-- PROFIL -->
+<section data-p="profil" hidden>
+  <div class="cards">
+    <div class="panel">
+      <h2>Mon CV original</h2>
+      <p class="hint">PDF, Word (.docx) ou texte. Le texte est extrait dans votre navigateur puis analysé automatiquement.</p>
+      <label class="drop" id="drop" for="cvFile"><b>Déposer mon CV ici</b><span class="hint">ou cliquer pour choisir un fichier</span></label>
+      <input type="file" id="cvFile" accept=".pdf,.docx,.txt,.md" hidden>
+      <div class="f mt">
+        <div class="row"><div><label for="pName">Prénom Nom</label><input id="pName"></div><div><label for="pTel">Téléphone</label><input id="pTel"></div></div>
+        <div class="row"><div><label for="pMail">E-mail</label><input id="pMail"></div><div><label for="pCity">Ville</label><input id="pCity" placeholder="ex. Nice"></div></div>
+        <div><label for="pCv">Texte du CV (modifiable)</label><textarea id="pCv" rows="12" placeholder="Le texte de votre CV apparaîtra ici après l'import."></textarea></div>
+        <div class="toolbar"><button class="btn" id="pSave">Enregistrer et analyser</button><span class="hint" id="pHint" style="margin:0"></span></div>
+      </div>
+    </div>
+    <div class="panel">
+      <h2>Rédaction automatique (facultatif)</h2>
+      <p class="hint">Pour que le site réécrive votre CV et rédige vos messages, collez votre clé d'IA Anthropic (elle commence par sk-ant-). Elle reste dans ce navigateur et sert uniquement à appeler l'IA. Coût : quelques centimes par CV réécrit, payés à Anthropic.</p>
+      <div class="row" style="align-items:flex-end"><div><label for="aiKey">Clé IA</label><input id="aiKey" type="password" autocomplete="off" placeholder="sk-ant-..."></div><div style="flex:0 0 auto" class="toolbar"><button class="btn" id="aiKeySave">Enregistrer</button><button class="btn ghost sm" id="aiKeyDel">Retirer</button></div></div>
+      <p class="hint mt" id="aiKeyHint"></p>
+      <h2 style="margin-top:22px">Sauvegarde et autres appareils</h2>
+      <p class="hint">Vos données restent dans ce navigateur. Pour les retrouver sur un autre appareil (Mac, iPhone) ou les mettre à l'abri, exportez-les puis importez le fichier de l'autre côté.</p>
+      <div class="toolbar"><button class="btn ghost sm" id="bkExport">Exporter mes données</button><label class="btn ghost sm" for="bkImport" style="margin:0;text-transform:none;letter-spacing:0;font-size:13px;color:var(--ink)">Importer une sauvegarde</label><input type="file" id="bkImport" accept=".json" hidden></div>
+      <h2 style="margin-top:22px">Mes pistes</h2>
+      <p class="hint">Un CV et une lettre par piste. Pour chaque offre, l'application choisit la piste adaptée (vous pouvez la changer) et s'en sert pour réécrire le CV et rédiger les messages.</p>
+      <div class="f">
+        <div><label for="pvSel">Piste</label><select id="pvSel"></select></div>
+        <div><label for="pvCv">CV de cette piste</label><textarea id="pvCv" rows="8"></textarea></div>
+        <div><label for="pvLet">Lettre de cette piste</label><textarea id="pvLet" rows="6"></textarea></div>
+        <div class="toolbar"><button class="btn" id="pvSave">Enregistrer la piste</button><label class="btn ghost sm" for="pvFile" style="margin:0;text-transform:none;letter-spacing:0;font-size:13px;color:var(--ink)">Importer un CV pour cette piste</label><input type="file" id="pvFile" accept=".pdf,.docx,.txt" hidden><label class="btn ghost sm" for="pvFileL" style="margin:0;text-transform:none;letter-spacing:0;font-size:13px;color:var(--ink)">Importer la lettre</label><input type="file" id="pvFileL" accept=".pdf,.docx,.txt" hidden></div>
+      </div>
+      <h2 class="mt" style="margin-top:22px">Analyse de mon CV</h2>
+      <p class="hint">Ce que voit un recruteur, les métiers où vous avez le plus de chances, et quoi corriger.</p>
+      <div class="ana" id="ana"><div class="out empty">L'analyse apparaîtra ici après l'import de votre CV.</div></div>
+    </div>
+  </div>
+</section>
+
+<!-- SUIVI -->
+<section data-p="suivi" hidden>
+  <div class="pipe" id="pipe"></div>
+  <div class="panel" style="margin-bottom:12px">
+    <h3>Ajouter une candidature faite ailleurs</h3>
+    <form class="row" id="addForm" style="align-items:flex-end">
+      <div><label for="tCompany">Entreprise</label><input id="tCompany" required></div>
+      <div><label for="tJob">Poste</label><input id="tJob" required></div>
+      <div><label for="tContact">Contact (nom, tél., e-mail)</label><input id="tContact"></div>
+      <div style="flex:0 0 auto"><button class="btn" type="submit">Ajouter</button></div>
+    </form>
+  </div>
+  <div class="list" id="apps"></div>
+  <p class="hint mt" id="storeHint"></p>
+</section>
+
+<!-- MESSAGES -->
+<section data-p="modeles" hidden>
+  <div class="panel" style="margin-bottom:12px">
+    <div class="row" style="align-items:flex-end">
+      <div><label for="mFor">Pour quelle candidature ?</label><select id="mFor"></select></div>
+      <div><label for="mRec">Nom du recruteur</label><input id="mRec" placeholder="si connu"></div>
+      <div style="flex:0 0 auto"><button class="btn" id="mAllAi">Tout compléter avec l'IA</button></div>
+    </div>
+    <p class="hint mt" style="margin-bottom:0">Les trous sont remplis automatiquement avec votre CV, la candidature choisie et vos coordonnées. « Compléter avec l'IA » réécrit chaque message pour qu'il soit unique.</p>
+  </div>
+  <div class="cards" id="tpls"></div>
+</section>
+
+<!-- ENTRETIEN -->
+<section data-p="entretien" hidden>
+  <div class="panel" style="margin-bottom:12px">
+    <div class="row" style="align-items:flex-end">
+      <div><label for="iFor">Entretien pour</label><select id="iFor"></select></div>
+      <div><label for="iJob">Poste</label><input id="iJob" placeholder="ex. Vendeur"></div>
+      <div><label for="iCo">Entreprise</label><input id="iCo" placeholder="facultatif"></div>
+    </div>
+    <div class="row mt">
+      <div><label>Type d'entretien</label><div class="seg" id="iType"></div></div>
+      <div><label>Niveau du recruteur</label><div class="seg" id="iLevel"></div></div>
+    </div>
+  </div>
+  <div class="cards">
+    <div class="panel">
+      <h2>Fiche de préparation complète</h2>
+      <p class="hint">Faite pour ce poste et votre CV : pitch rédigé, questions probables avec vos réponses, questions pièges, salaire, questions à poser, check-list du jour J.</p>
+      <div class="toolbar"><button class="btn" id="iPrep">Générer ma fiche</button><button class="btn ghost sm" id="iPrepCopy">Copier</button><button class="btn ghost sm" id="iPrepDl">Télécharger (PDF)</button></div>
+      <div class="out empty mt" id="prepOut">Choisissez le poste ci-dessus puis générez la fiche.</div>
+    </div>
+    <div class="panel">
+      <h2>Simulation d'entretien</h2>
+      <p class="hint">L'IA joue le recruteur selon le type et le niveau choisis, réagit à vos réponses, relance comme en vrai, note chaque réponse et propose une meilleure formulation.</p>
+      <div class="toolbar"><button class="btn" id="iStart">Commencer la simulation</button><button class="btn ghost sm" id="iEnd" hidden>Terminer et voir mon bilan</button></div>
+      <div class="chat mt" id="chat"></div>
+      <form class="f mt" id="iForm" hidden><label for="iAns">Votre réponse</label><textarea id="iAns" rows="3"></textarea><div class="toolbar"><button class="btn" type="submit">Répondre</button></div></form>
+    </div>
+  </div>
+  <div class="cards mt">
+    <div class="panel">
+      <h2>Questions d'entretien, réponses à partir de votre CV</h2>
+      <p class="hint">Pour chaque question : la méthode, puis « Ma réponse » écrit une réponse personnalisée avec votre parcours et le poste choisi.</p>
+      <div id="qas"></div>
+    </div>
+    <div class="panel">
+      <h2>Demander au coach</h2>
+      <p class="hint">Une situation précise ? « Comment expliquer 6 mois sans emploi ? », « Que répondre si on me dit que je suis surqualifié ? », « Comment négocier 2 000 € net ? »</p>
+      <div class="coachbox"><div class="chat" id="coachChat"></div>
+      <form class="f" id="coachForm"><textarea id="coachQ" rows="3" placeholder="Votre question…" aria-label="Votre question au coach"></textarea><div class="toolbar"><button class="btn" type="submit">Demander</button></div></form></div>
+    </div>
+  </div>
+</section>
+<style>
+.subnav{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:14px}
+.subnav button{font:600 13.5px var(--body);padding:8px 14px;border-radius:99px;border:1px solid var(--line);background:var(--panel);color:var(--ink);cursor:pointer}
+.subnav button[aria-pressed="true"]{background:var(--accent);color:var(--accent-ink);border-color:var(--accent)}
+.subnav b{font-family:var(--mono);font-weight:500;margin-left:4px;opacity:.8}
+.path{display:grid;grid-template-columns:repeat(auto-fit,minmax(250px,1fr));gap:10px;margin-bottom:14px}
+.path .panel h3{margin-bottom:4px}
+.path .panel p{margin:0 0 8px;font-size:13.5px;color:var(--muted)}
+.org .certs{grid-column:1/-1;font-size:13px;color:var(--muted);margin:2px 0 0;padding-left:16px}
+.org .certs li{overflow-wrap:anywhere}
+</style>
+<section data-p="indep" hidden>
+  <div class="subnav" id="indNav"></div>
+
+  <div data-ip="missions">
+    <p class="hint">Missions en profession libérale, vacations, jurys et évaluations, publiées sur France Travail et ses partenaires. Elles sont classées par proximité : 06 et Monaco, puis PACA, puis le reste de la France et le distanciel.</p>
+    <div class="list" id="missList"></div>
+  </div>
+
+  <div data-ip="orgs" hidden>
+    <div class="panel" style="margin-bottom:12px">
+      <p class="hint" style="margin-top:0">Organismes de formation certifiés Qualiopi installés dans le 06, d'après la liste publique officielle (Ministère du Travail). Ce sont vos clients potentiels pour des prestations de préparation aux titres, d'oraux blancs ou d'ateliers.</p>
+      <div class="filters" style="grid-template-columns:2fr 1fr 1fr">
+        <div><label for="oq">Nom, ville, spécialité</label><input id="oq" placeholder="ex. commerce, Nice, Sophia"></div>
+        <div><label for="ot">Type</label><select id="ot"><option value="">Tous</option><option value="cfa">CFA (apprentissage)</option><option value="vae">Accompagnement VAE</option></select></div>
+        <div><label for="os">Statut</label><select id="os"><option value="">Tous</option><option value="new">Pas encore contactés</option><option value="pipe">Dans mon pipeline</option></select></div>
+      </div>
+    </div>
+    <div class="meta"><span id="orgCount"></span></div>
+    <div class="list" id="orgList"></div>
+    <div class="toolbar mt" style="justify-content:center"><button class="btn ghost" id="orgMore" hidden>Afficher plus</button></div>
+  </div>
+
+  <div data-ip="certs" hidden>
+    <div class="path">
+      <div class="panel"><h3>Titres professionnels</h3><p>Le Ministère du Travail habilite les jurés par la DREETS. Les jurés déjà habilités peuvent demander une extension à d'autres titres de leur champ : Responsable d'établissement marchand, Manager d'unité marchande, Assistant de direction, Formateur professionnel d'adultes…</p>
+        <div class="toolbar"><a class="btn sm" target="_blank" rel="noopener" href="https://www.google.com/search?q=DREETS+PACA+devenir+membre+de+jury+titre+professionnel">DREETS PACA : devenir juré</a><button class="btn ghost sm" id="dreetsMsg">Rédiger ma demande</button></div></div>
+      <div class="panel"><h3>Diplômes de l'Éducation nationale</h3><p>Les rectorats recrutent des professionnels pour les jurys de BTS (MCO, NDRC, GPME, SAM), CAP et bacs pro, ainsi que pour la VAE. Pour le 06 : académie de Nice, division des examens et concours.</p>
+        <div class="toolbar"><a class="btn sm" target="_blank" rel="noopener" href="https://www.google.com/search?q=acad%C3%A9mie+de+Nice+jury+professionnels+BTS+inscription">Académie de Nice</a><button class="btn ghost sm" id="rectoMsg">Rédiger ma demande</button></div></div>
+      <div class="panel"><h3>Certificateurs privés (RNCP et RS)</h3><p>Écoles, réseaux et organismes qui délivrent des titres ou des tests. Ils recrutent des jurés, des évaluateurs et des auditeurs ou contrôleurs pour vérifier les sessions d'examen de leurs centres partenaires.</p>
+        <div class="hint" style="margin:0">Liste ci-dessous : <b id="certTotal">…</b> certificateurs actifs dans vos domaines.</div></div>
+    </div>
+    <div class="panel" style="margin-bottom:12px">
+      <div class="filters" style="grid-template-columns:2fr 1fr 1fr">
+        <div><label for="cq">Nom ou certification</label><input id="cq" placeholder="ex. commercial, management, Négociateur, TOSA"></div>
+        <div><label for="ct">Type</label><select id="ct"><option value="">Tous</option><option value="prive">Privés (écoles, réseaux)</option><option value="rs">Tests et certifications courtes (RS)</option><option value="consulaire">CCI et chambres des métiers</option><option value="public">Publics (ministères, universités)</option></select></div>
+        <div><label for="cs">Statut</label><select id="cs"><option value="">Tous</option><option value="new">Pas encore contactés</option><option value="pipe">Dans mon pipeline</option></select></div>
+      </div>
+      <p class="hint mt" style="margin-bottom:0">Source : France Compétences (RNCP et Répertoire spécifique), export du 24 novembre 2026. Les coordonnées ne figurent pas dans le répertoire : les boutons cherchent la page « jury » ou « devenir évaluateur » de chaque certificateur.</p>
+    </div>
+    <div class="meta"><span id="certCount"></span></div>
+    <div class="list" id="certList"></div>
+    <div class="toolbar mt" style="justify-content:center"><button class="btn ghost" id="certMore" hidden>Afficher plus</button></div>
+  </div>
+
+  <div data-ip="pipe" hidden>
+    <div class="pipe" id="ppipe"></div>
+    <div class="list" id="pList"></div>
+  </div>
+</section>
+
+</div>
+
+<div class="shade" id="shade" hidden></div>
+<aside class="drawer" id="drawer" hidden role="dialog" aria-modal="true" aria-labelledby="dTitle"></aside>
+<div class="toast" id="toast" role="status"></div>
+
+<script>
+/* ===== Version autonome : IA via votre propre clé, téléchargements locaux ===== */
+(function(){
+  const KEY='ld_ai_key';
+  const getKey=()=>{try{return localStorage.getItem(KEY)||''}catch(e){return ''}};
+  const MODEL='claude-opus-5-5';
+  async function call(input,opts={}){
+    const key=getKey();if(!key)throw{code:'no_key'};
+    const messages=typeof input==='string'?[{role:'user',content:input}]:input;
+    const body={model:MODEL,max_tokens:16000,stream:true,messages,output_config:{effort:opts.modelTier==='quick'?'low':'medium'},fallbacks:'default'};
+    let res;
+    try{res=await fetch('https://api.anthropic.com/v1/messages',{method:'POST',headers:{'content-type':'application/json','x-api-key':key,'anthropic-version':'2026-10-21','anthropic-beta':'server-side-fallback-2026-07-01','anthropic-dangerous-direct-browser-access':'true'},body:JSON.stringify(body)})}
+    catch(e){throw{code:'network'}}
+    if(!res.ok){let m='';try{m=(await res.json()).error?.message||''}catch(e){}throw{code:res.status===401?'bad_key':res.status===429?'rate_limited':res.status===402||/credit/i.test(m)?'no_credit':'api_error',message:m}}
+    const reader=res.body.getReader(),dec=new TextDecoder();let buf='',text='',stop=null;
+    for(;;){const {done,value}=await reader.read();if(done)break;buf+=dec.decode(value,{stream:true});
+      let i;while((i=buf.indexOf('\n\n'))>=0){const chunk=buf.slice(0,i);buf=buf.slice(i+2);
+        const line=chunk.split('\n').find(l=>l.startsWith('data:'));if(!line)continue;let ev;try{ev=JSON.parse(line.slice(5))}catch(e){continue}
+        if(ev.type==='content_block_delta'&&ev.delta&&ev.delta.type==='text_delta'){text+=ev.delta.text;opts.onText&&opts.onText({text,delta:ev.delta.text})}
+        if(ev.type==='message_delta'&&ev.delta)stop=ev.delta.stop_reason;
+        if(ev.type==='error')throw{code:'api_error',message:ev.error&&ev.error.message}}}
+    if(stop==='refusal')throw{code:'refusal',text};
+    return{text,truncated:stop==='max_tokens'};
+  }
+  const sample=(input,opts)=>call(input,opts);
+  sample.json=async(input,opts)=>{const r=await call((typeof input==='string'?input:'')+'\n\nRéponds uniquement avec le JSON demandé, sans texte autour ni balises de code.',opts);const m=r.text.match(/\{[\s\S]*\}/);if(!m)throw{code:'api_error',message:'Réponse illisible'};return JSON.parse(m[0])};
+  window.LD_sample=()=>getKey()?sample:null;
+  window.LD_setKey=k=>{try{k?localStorage.setItem(KEY,k.trim()):localStorage.removeItem(KEY)}catch(e){}};
+  window.LD_getKey=getKey;
+  window.LD_download={save:async({filename,data})=>{const blob=data instanceof Blob?data:new Blob([data],{type:/\.pdf$/i.test(filename)?'application/pdf':/\.doc$/i.test(filename)?'application/msword':/\.json$/i.test(filename)?'application/json':'text/plain'});
+    const a=document.createElement('a');a.href=URL.createObjectURL(blob);a.download=filename;document.body.append(a);a.click();setTimeout(()=>{URL.revokeObjectURL(a.href);a.remove()},2000);return{status:'saved'}}};
+})();
+</script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.worker.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/mammoth/1.6.0/mammoth.browser.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+<script>
+const $=s=>document.querySelector(s), $$=s=>[...document.querySelectorAll(s)], enc=encodeURIComponent;
+function h(tag,props,...kids){const e=document.createElement(tag);if(props)for(const[k,v]of Object.entries(props)){if(v==null||v===false)continue;if(k==='class')e.className=v;else if(k.startsWith('on'))e[k]=v;else if(k==='text')e.textContent=v;else e.setAttribute(k,v===true?'':v)}for(const c of kids.flat()){if(c==null||c===false)continue;e.append(c instanceof Node?c:document.createTextNode(String(c)))}return e}
+function toast(t){const e=$('#toast');e.textContent=t;e.classList.add('on');clearTimeout(e._t);e._t=setTimeout(()=>e.classList.remove('on'),2600)}
+function ls(k,v){try{if(v===undefined)return localStorage.getItem(k);localStorage.setItem(k,v)}catch(e){return null}}
+function copy(t){navigator.clipboard.writeText(t).then(()=>toast('Copié')).catch(()=>toast('Sélectionnez le texte puis copiez-le'))}
+const safeUrl=u=>typeof u==='string'&&/^https:\/\//.test(u)?u:null;
+const ext=(href,title,desc,cls)=>h('a',{href,target:'_blank',rel:'noopener',class:cls},h('b',{text:title}),h('span',{text:desc}));
+const norm=s=>(s||'').normalize('NFD').replace(/[̀-ͯ]/g,'').toLowerCase();
+
+const ZONES={"06,MC":"Alpes-Maritimes + Monaco","06":"Alpes-Maritimes (06)","MC":"Monaco","tt":"Télétravail (toute la France)","":"Toute la France"};
+const DEPTS={"01":"Ain","02":"Aisne","03":"Allier","04":"Alpes-de-Haute-Provence","05":"Hautes-Alpes","07":"Ardèche","08":"Ardennes","09":"Ariège","10":"Aube","11":"Aude","12":"Aveyron","13":"Bouches-du-Rhône","14":"Calvados","15":"Cantal","16":"Charente","17":"Charente-Maritime","18":"Cher","19":"Corrèze","2A":"Corse-du-Sud","2B":"Haute-Corse","21":"Côte-d'Or","22":"Côtes-d'Armor","23":"Creuse","24":"Dordogne","25":"Doubs","26":"Drôme","27":"Eure","28":"Eure-et-Loir","29":"Finistère","30":"Gard","31":"Haute-Garonne","32":"Gers","33":"Gironde","34":"Hérault","35":"Ille-et-Vilaine","36":"Indre","37":"Indre-et-Loire","38":"Isère","39":"Jura","40":"Landes","41":"Loir-et-Cher","42":"Loire","43":"Haute-Loire","44":"Loire-Atlantique","45":"Loiret","46":"Lot","47":"Lot-et-Garonne","48":"Lozère","49":"Maine-et-Loire","50":"Manche","51":"Marne","52":"Haute-Marne","53":"Mayenne","54":"Meurthe-et-Moselle","55":"Meuse","56":"Morbihan","57":"Moselle","58":"Nièvre","59":"Nord","60":"Oise","61":"Orne","62":"Pas-de-Calais","63":"Puy-de-Dôme","64":"Pyrénées-Atlantiques","65":"Hautes-Pyrénées","66":"Pyrénées-Orientales","67":"Bas-Rhin","68":"Haut-Rhin","69":"Rhône","70":"Haute-Saône","71":"Saône-et-Loire","72":"Sarthe","73":"Savoie","74":"Haute-Savoie","75":"Paris","76":"Seine-Maritime","77":"Seine-et-Marne","78":"Yvelines","79":"Deux-Sèvres","80":"Somme","81":"Tarn","82":"Tarn-et-Garonne","83":"Var","84":"Vaucluse","85":"Vendée","86":"Vienne","87":"Haute-Vienne","88":"Vosges","89":"Yonne","90":"Territoire de Belfort","91":"Essonne","92":"Hauts-de-Seine","93":"Seine-Saint-Denis","94":"Val-de-Marne","95":"Val-d'Oise","971":"Guadeloupe","972":"Martinique","973":"Guyane","974":"La Réunion","976":"Mayotte"};
+{const s=$('#fd');for(const[k,v]of Object.entries(ZONES))s.append(h('option',{value:k,text:v}));const g=h('optgroup',{label:'Autres départements'});for(const[k,v]of Object.entries(DEPTS))g.append(h('option',{value:k,text:`${k} · ${v}`}));s.append(g)}
+
+function showTab(t){$$('nav.tabs button').forEach(x=>x.setAttribute('aria-selected',x.dataset.t===t));$$('section[data-p]').forEach(s=>s.hidden=s.dataset.p!==t);ls('ld_tab',t);window.scrollTo(0,0)}
+$$('nav.tabs button').forEach(b=>b.onclick=()=>showTab(b.dataset.t));
+{const t=ls('ld_tab');if(t&&$(`section[data-p="${t}"]`))showTab(t)}
+
+/* ---------- état ---------- */
+let OFFRES=[], profil={name:'',tel:'',mail:'',city:'',cv:'',analyse:null}, apps=[], db=null, uid=null, CUR=null;
+const DAY=864e5,today0=()=>new Date(new Date().toDateString()).getTime();
+const fmtD=t=>new Date(t).toLocaleDateString('fr-FR',{weekday:'short',day:'2-digit',month:'short'});
+const fmtDT=t=>new Date(t).toLocaleString('fr-FR',{weekday:'short',day:'2-digit',month:'short',hour:'2-digit',minute:'2-digit'});
+
+/* ---------- IA ---------- */
+const getSample=()=>Promise.resolve(window.LD_sample());
+function aiErr(e){const c=e&&e.code;return c==='no_key'||c==='unavailable'?'Rédaction automatique désactivée : ajoutez votre clé IA dans l\'onglet « Mon CV » (rubrique « Rédaction automatique »). Les modèles de messages et le suivi fonctionnent sans.':c==='bad_key'?'Clé IA refusée : vérifiez-la dans « Mon CV ».':c==='no_credit'?'Votre compte IA n\'a plus de crédit : rechargez-le sur console.anthropic.com.':c==='rate_limited'?'Trop de demandes en même temps, réessayez dans une minute.':c==='network'?'Pas de connexion internet.':c==='refusal'?'L\'IA a refusé cette demande. Reformulez-la.':'Erreur de l\'IA'+(e&&e.message?' : '+e.message:'')+'. Réessayez.'}
+async function ask(input,outEl,btn,opt={}){
+  if(outEl){outEl.classList.remove('empty');outEl.textContent=opt.wait||'Rédaction en cours…'}if(btn)btn.disabled=true;
+  try{const s=await getSample();if(!s)throw{code:'unavailable'};
+    const r=await s(input,{modelTier:opt.tier||'default',cache:opt.cache,onText:({text})=>{if(outEl)outEl.textContent=opt.view?opt.view(text):text}});
+    if(outEl)outEl.textContent=opt.view?opt.view(r.text):r.text;return r.text}
+  catch(e){if(outEl)outEl.textContent=aiErr(e)+(opt.fallback?'\n\n'+opt.fallback():'');return null}
+  finally{if(btn)btn.disabled=false}
+}
+async function askJson(input,tier){const s=await getSample();if(!s)throw{code:'unavailable'};return s.json(input,{modelTier:tier||'default'})}
+const who=()=>`${profil.name||'[Prénom Nom]'} · ${profil.tel||'[téléphone]'}${profil.mail?' · '+profil.mail:''}`;
+const cvText=()=>profil.cv||'(CV non fourni)';
+const PISTES_DEF=[{id:'dg',nom:'Direction générale & opérationnelle'},{id:'cfa',nom:'Direction de CFA'},{id:'presta',nom:'Préparation aux certifications (indépendante)'}];
+const pistes=()=>{const p=profil.pistes&&profil.pistes.length?profil.pistes:[];return PISTES_DEF.map(d=>Object.assign({cv:'',lettre:''},d,p.find(x=>x.id===d.id)||{}))};
+const getPiste=id=>pistes().find(p=>p.id===id)||pistes()[0];
+const pisteCv=id=>(getPiste(id).cv||profil.cv||'(CV non fourni)');
+const DIRRE=/directeu?r|directrice|director|head of|general manager|g[ée]rant|country manager|operations manager|responsable (de site|d.exploitation|des op[ée]rations|de production|d.usine|d.[ée]tablissement|p[ée]dagogique|de centre|d.agence)|adjoint de direction|campus manager|chief|coo\b/i;
+const DIRNO=/cr[èe]che|petite enfance|ehpad|soins|infirm|m[ée]dic|pharmac|travaux|chantier|btp|comptab|financ|juridique|informatique|\bSI\b|data|ing[ée]nieur|[ée]tudes de prix|audit|paie|immobili|banc|bancaire|assurance|restauration rapide|mcdonald/i;
+const isDir=o=>DIRRE.test(o.titre)&&!DIRNO.test(o.titre);
+const CFARE=/cfa|centre de formation|organisme de formation|[ée]cole|formation|p[ée]dagog|campus|[ée]tudes|apprentissage|qualiopi/i;
+function pisteFor(o){if(o.piste)return o.piste;if(o.free)return 'presta';return CFARE.test(o.titre)?'cfa':'dg'}
+
+/* ---------- import du CV ---------- */
+async function extractText(file){
+  const n=file.name.toLowerCase(),buf=await file.arrayBuffer();
+  if(n.endsWith('.pdf')){
+    if(!window.pdfjsLib)throw new Error('lecteur PDF indisponible');
+    const pdf=await pdfjsLib.getDocument({data:new Uint8Array(buf),isEvalSupported:false}).promise;let out='';
+    for(let i=1;i<=pdf.numPages;i++){const c=await (await pdf.getPage(i)).getTextContent();let last=null;
+      let lx=0;for(const it of c.items){if(!it.str)continue;const y=it.transform[5],x=it.transform[4],fs=Math.hypot(it.transform[0],it.transform[1])||10;if(last!==null&&Math.abs(y-last)>2)out+='\n';else if(last!==null&&x-lx>fs*0.2&&!/\s$/.test(out)&&!/^\s/.test(it.str))out+=' ';out+=/^(\S )+\S$/.test(it.str)?it.str.replace(/ /g,''):it.str;last=y;lx=x+(it.width||0)}out+='\n\n'}
+    return out.replace(/[ \t]+/g,' ').replace(/\n{3,}/g,'\n\n').trim();
+  }
+  if(n.endsWith('.docx')){if(!window.mammoth)throw new Error('lecteur Word indisponible');return (await mammoth.extractRawText({arrayBuffer:buf})).value.trim()}
+  return new TextDecoder().decode(buf).trim();
+}
+async function importFile(file){
+  if(!file)return;$('#pHint').textContent='Lecture de '+file.name+'…';
+  try{const t=await extractText(file);
+    if(t.length<80){$('#pHint').textContent='Ce fichier ne contient presque pas de texte (CV scanné en image ?). Collez le texte dans le champ ci-dessous.';return}
+    $('#pCv').value=t;
+    const mail=t.match(/[\w.+-]+@[\w-]+\.[\w.-]+/),tel=t.match(/(?:\+33|\+377|0)\s?[1-9](?:[\s.-]?\d{2}){4}/);
+    if(mail&&!$('#pMail').value)$('#pMail').value=mail[0];if(tel&&!$('#pTel').value)$('#pTel').value=tel[0];
+    if(!$('#pName').value){const first=t.split('\n').map(x=>x.trim()).find(x=>/^[A-Za-zÀ-ÿ' -]{4,40}$/.test(x)&&x.split(' ').length<=4);if(first)$('#pName').value=first}
+    await saveProfil(true);
+  }catch(e){$('#pHint').textContent='Impossible de lire ce fichier ('+(e.message||'format')+'). Collez le texte du CV dans le champ ci-dessous.'}
+}
+$('#cvFile').onchange=e=>importFile(e.target.files[0]);
+const drop=$('#drop');['dragenter','dragover'].forEach(ev=>drop.addEventListener(ev,e=>{e.preventDefault();drop.classList.add('on')}));
+['dragleave','drop'].forEach(ev=>drop.addEventListener(ev,e=>{e.preventDefault();drop.classList.remove('on')}));
+drop.addEventListener('drop',e=>importFile(e.dataTransfer.files[0]));
+$('#nudgeBtn').onclick=()=>showTab('profil');
+
+async function persist(){
+  if(db&&uid){try{await db.doc(`data/users/${uid}/profil`).set(profil)}catch(e){toast('Enregistrement impossible, réessayez')}}
+  else ls('ld_profil',JSON.stringify(profil));
+}
+async function saveProfil(analyse){
+  const cv=$('#pCv').value.trim(),changed=cv!==profil.cv;
+  Object.assign(profil,{name:$('#pName').value.trim(),tel:$('#pTel').value.trim(),mail:$('#pMail').value.trim(),city:$('#pCity').value.trim(),cv});
+  if(changed)profil.analyse=null;
+  await persist();$('#pHint').textContent='CV enregistré.';refreshAll();
+  if(cv&&(analyse||changed||!profil.analyse))analyseCv();
+}
+$('#pSave').onclick=()=>saveProfil(true);
+
+async function analyseCv(){
+  const box=$('#ana');box.innerHTML='';box.append(h('div',{class:'out',text:'Analyse de votre CV en cours (20 à 60 secondes)…'}));$('#pSave').disabled=true;
+  try{
+    const a=await askJson(`Tu es un recruteur et conseiller emploi expérimenté sur le bassin de Nice, Côte d'Azur et Monaco. Analyse ce CV et réponds UNIQUEMENT en JSON avec ces clés :
+{"titre": "intitulé de poste le plus juste pour ce candidat",
+ "resume": "2 phrases : comment un recruteur perçoit ce profil",
+ "metiers": ["5 à 7 intitulés de postes courts (1 à 3 mots, tels qu'ils apparaissent dans les offres) où il a le plus de chances d'être rappelé vite, du plus probable au moins probable, y compris des postes voisins accessibles"],
+ "mots_cles": ["15 mots-clés métier présents dans le CV, en minuscules"],
+ "competences": ["les 3 compétences les plus vendeuses, formulées courtes"],
+ "realisation": "le résultat le plus concret du CV en une phrase (sans rien inventer ; sinon une réalisation formulée à partir des missions)",
+ "annees": "nombre d'années d'expérience, ex. '3 ans'",
+ "domaine": "domaine principal, ex. 'la vente en magasin'",
+ "forces": ["3 forces"],
+ "corrections": ["3 à 5 corrections prioritaires du CV, concrètes"],
+ "conseil_local": "un conseil spécifique au marché 06 / Monaco pour ce profil (saisonnalité, tourisme, luxe, Sophia Antipolis, langues, permis…)",
+ "score_ats": nombre de 0 à 100}
+N'invente aucune expérience.
+
+CV :
+${profil.cv}`);
+    profil.analyse=a;await persist();renderAnalyse();refreshAll();
+  }catch(e){box.innerHTML='';box.append(h('div',{class:'out',text:aiErr(e)}))}
+  finally{$('#pSave').disabled=false}
+}
+function list(title,arr){return arr&&arr.length?h('div',null,h('h3',{text:title}),h('ul',null,...arr.map(x=>h('li',{text:x})))):null}
+function renderAnalyse(){
+  const a=profil.analyse,box=$('#ana');box.innerHTML='';
+  if(!a){box.append(h('div',{class:'out empty',text:profil.cv?'Cliquez sur « Enregistrer et analyser ».':'L\'analyse apparaîtra ici après l\'import de votre CV.'}));return}
+  box.append(
+    h('div',{class:'score'},h('div',{class:'gauge',text:(a.score_ats|0)+'/100',style:`color:${a.score_ats>=65?'var(--accent)':'var(--signal)'}`}),h('div',null,h('b',{text:a.titre||''}),h('div',{class:'hint',style:'margin:2px 0 0',text:'Lisibilité ATS estimée du CV actuel'}))),
+    h('p',{style:'margin:0',text:a.resume||''}),
+    h('div',null,h('h3',{text:'Métiers où vous serez rappelé le plus vite'}),h('div',null,...(a.metiers||[]).map(m=>h('button',{class:'pill',onclick:()=>{$('#fq').value=m;$('#fs').value='';showTab('offres');shown=40;renderOffres()}},m)))),
+    list('Vos forces',a.forces),list('À corriger en priorité',a.corrections),
+    a.conseil_local?h('p',{class:'note',text:a.conseil_local}):null,
+    h('button',{class:'btn',onclick:()=>{$('#fs').value='pourmoi';$('#fq').value='';showTab('offres');shown=40;renderOffres()}},'Voir les offres qui correspondent à mon CV'));
+}
+
+/* ---------- correspondance ---------- */
+const STOP=new Set('les des une pour par sur dans avec sans vos votre nos notre vous nous est sont etre profil missions mission poste recherchons qui que cette ces son ses leur leurs ans plus tout tous toute toutes chez afin ainsi bien tres bonne bon etc aux h/f f/h description entreprise recrute recrutons rejoindre rejoignez sein cadre temps plein travail emploi offre arrondissement renseigne non sous cdi cdd interim mois heures semaine poste experience client clients equipe cette avoir faire etes serez vous'.split(' '));
+const terms=t=>(norm(t).match(/[a-z0-9+#]{3,}/g)||[]).filter(x=>!STOP.has(x));
+let cvTerms=null,metierTerms=[];
+const stem=w=>w.length>5?w.slice(0,5):w;
+function prepMatch(){cvTerms=profil.cv?new Set([...terms(profil.cv),...(profil.analyse?.mots_cles||[]).flatMap(terms)].map(stem)):null;
+  metierTerms=(profil.analyse?.metiers||[]).map(m=>terms(m).map(stem)).filter(x=>x.length)}
+function offerScore(o){
+  if(!cvTerms)return 0;const tt=new Set(terms(o.titre).map(stem)),bt=new Set(terms(o.extrait).map(stem));
+  let s=0;for(const m of metierTerms){if(m.every(w=>tt.has(w))){s+=55;break}}
+  let th=0,bh=0;for(const w of tt)if(cvTerms.has(w))th++;for(const w of bt)if(!tt.has(w)&&cvTerms.has(w))bh++;
+  s+=Math.min(30,th*15)+Math.min(25,bh*4);return Math.min(99,s);
+}
+function matchScore(cv,job,noise){
+  const jt=terms(job).filter(w=>!(noise&&noise.has(w))),cvs=new Set(terms(cv)),fq={};jt.forEach(w=>fq[w]=(fq[w]||0)+1);
+  const top=Object.entries(fq).sort((a,b)=>b[1]-a[1]||b[0].length-a[0].length).slice(0,20).map(x=>x[0]);
+  const ok=top.filter(w=>cvs.has(w)||[...cvs].some(c=>c.length>4&&w.length>4&&c.slice(0,5)===w.slice(0,5)));
+  return{pct:top.length?Math.round(ok.length/top.length*100):0,top,ok};
+}
+
+/* ---------- offres ---------- */
+const TT=/t[ée]l[ée]\s?travail|full remote|remote|100 ?% ?distanciel|à distance|hybride/i;
+const offerUrl=o=>`https://candidat.francetravail.fr/offres/recherche/detail/${enc(o.id)}`;
+const cleanCo=c=>(c||'').replace(/\s*-\s*(\d{2,3}|2A|2B)$/,'').trim();
+function contractTag(c){const t=(c||'').split(' - ')[0];return h('span',{class:'tag'+(t==='CDI'?'':t.startsWith('Int')?' info':' mut'),text:t||'Contrat'})}
+let shown=40;
+function inZone(o,z){if(!z)return true;if(z==='tt')return o.tt;return z.split(',').includes(o.dept)}
+function filtered(){
+  const q=norm($('#fq').value).split(/\s+/).filter(Boolean),z=$('#fd').value,c=$('#fc').value,s=$('#fs').value;
+  let r=OFFRES.filter(o=>{
+    if(!inZone(o,z))return false;
+    if(c==='tt'){if(!o.tt)return false}else if(c&&!(o.contrat||'').startsWith(c))return false;
+    if(s==='today'&&!/aujourd/.test(o.publie||''))return false;
+    if(s==='direct'&&!safeUrl(o.contact&&o.contact.site))return false;
+    if(q.length){const hay=o._n||(o._n=norm(o.titre+' '+o.entreprise+' '+o.extrait+' '+o.lieu));if(!q.every(w=>hay.includes(w)))return false}
+    return true});
+  if(cvTerms)r.forEach(o=>o._s=offerScore(o));
+  if(s==='pourmoi')r=r.filter(o=>o._s>=20).sort((a,b)=>b._s-a._s);
+  if(s==='direction')r=r.filter(isDir).sort((a,b)=>(b.salMax||0)-(a.salMax||0)||(b._s||0)-(a._s||0));
+  if(s==='salaire')r=r.filter(o=>o.salMax>=40000||isDir(o)).sort((a,b)=>(b.salMax||0)-(a.salMax||0)||(b._s||0)-(a._s||0));
+  return r;
+}
+function renderOffres(){
+  const L=$('#list');L.innerHTML='';const res=filtered();
+  $('#countTxt').textContent=`${res.length.toLocaleString('fr-FR')} offre${res.length>1?'s':''}`;
+  if(!OFFRES.length){L.append(h('div',{class:'empty-state'},'Les offres n\'ont pas pu être chargées. Rechargez la page dans un instant.'));$('#moreBtn').hidden=true;return}
+  if(!res.length){L.append(h('div',{class:'empty-state'},$('#fs').value==='pourmoi'&&!cvTerms?'Importez votre CV dans l\'onglet « Mon CV » pour classer les offres selon votre profil.':'Aucune offre ne correspond. Élargissez la zone ou le mot-clé.'));$('#moreBtn').hidden=true;return}
+  const done=new Set(apps.map(a=>a.offreId).filter(Boolean));
+  res.slice(0,shown).forEach(o=>{
+    const direct=safeUrl(o.contact&&o.contact.site);
+    L.append(h('article',{class:'offer'},
+      h('div',null,h('h3',{text:o.titre}),h('div',{class:'co'},h('b',{text:cleanCo(o.entreprise)||'Entreprise non communiquée'}),' · ',o.lieu)),
+      h('div',{class:'side'},cvTerms&&o._s>=20?h('span',{class:'match',text:`${o._s}% pour vous`}):null,o.salTxt?h('span',{class:'tag'+(o.salMax>=50000?' hot':''),text:o.salTxt}):null,contractTag(o.contrat),o.tt?h('span',{class:'tag info',text:'Télétravail'}):null,h('span',{class:'tag'+(/aujourd/.test(o.publie)?' hot':' mut'),text:o.publie||''})),
+      h('p',{text:o.extrait}),
+      h('div',{class:'acts'},
+        done.has(o.id)?h('span',{class:'tag',text:'Déjà postulé'}):null,
+        h('button',{class:'btn sm',onclick:()=>openOffer(o)},'Postuler'),
+        h('a',{class:'btn ghost sm',href:offerUrl(o),target:'_blank',rel:'noopener'},'Voir l\'offre complète'),
+        direct?h('a',{class:'btn ghost sm',href:direct,target:'_blank',rel:'noopener'},'Candidature directe'):null,
+        o.source&&o.source!=='France Travail'?h('span',{class:'tag mut',text:'via '+o.source}):null)));
+  });
+  $('#moreBtn').hidden=res.length<=shown;
+}
+['#fq','#fd','#fc','#fs'].forEach(s=>$(s).addEventListener('input',()=>{shown=40;renderOffres();ls('ld_f3',JSON.stringify({q:$('#fq').value,d:$('#fd').value,c:$('#fc').value,s:$('#fs').value}))}));
+$('#fd').value='06,MC';
+try{const f=JSON.parse(ls('ld_f3')||'null');if(f){$('#fq').value=f.q||'';$('#fd').value=f.d??'06,MC';$('#fc').value=f.c||'';$('#fs').value=f.s||''}}catch(e){}
+$('#moreBtn').onclick=()=>{shown+=40;renderOffres()};
+$('#recoBtn').onclick=()=>{$('#fs').value='pourmoi';$('#fq').value='';shown=40;renderOffres()};
+function ago(iso){const m=Math.round((Date.now()-new Date(iso))/6e4);if(m<60)return`il y a ${m} min`;const hh=Math.round(m/60);return hh<48?`il y a ${hh} h`:`il y a ${Math.round(hh/24)} jours`}
+fetch('data/offres.json',{cache:'no-cache'}).then(r=>r.json()).then(d=>{
+  const seen=new Set();OFFRES=[...(d.ciblees||[]),...(d.offres||[])].filter(o=>!seen.has(o.id)&&seen.add(o.id));
+  OFFRES.forEach(o=>{o.extrait=(o.extrait||'').replace(/\\[nrt]/g,' ');o.tt=o.tt||TT.test(o.titre+' '+o.extrait);if(/monaco/i.test(o.lieu)||o.dept==='99138')o.dept='MC'});
+  $('#kOffres').textContent=OFFRES.length.toLocaleString('fr-FR');
+  $('#majTxt').textContent=`France Travail et sites partenaires · dernière collecte ${ago(d.maj)}`;
+  refreshAll();if(window.__offresReady)window.__offresReady();
+}).catch(()=>{$('#majTxt').textContent='Offres indisponibles pour le moment';renderOffres()});
+
+/* ---------- export CV ---------- */
+const getDl=()=>Promise.resolve(window.LD_download);
+function cvPdf(text,title){
+  const {jsPDF}=window.jspdf;const doc=new jsPDF({unit:'pt',format:'a4'});const W=595,M=48;let y=56;
+  const lines=text.replace(/\r/g,'').split('\n');
+  for(let i=0;i<lines.length;i++){let l=lines[i].replace(/[^\S\n]+$/,'');
+    const isHead=/^[A-ZÀ-ÖØ-Þ0-9 '’&\/-]{4,}$/.test(l.trim())&&l.trim().length<45;
+    const isFirst=i===0;doc.setFont('helvetica',isFirst||isHead?'bold':'normal');doc.setFontSize(isFirst?16:isHead?11.5:10.2);
+    if(isHead&&!isFirst){y+=6;}
+    const wrapped=l?doc.splitTextToSize(l,W-2*M):[''];
+    for(const w of wrapped){if(y>800){doc.addPage();y=56}doc.text(w,M,y);y+=isFirst?20:isHead?15:13.5}
+    if(isHead&&!isFirst){doc.setDrawColor(11,122,85);doc.line(M,y-9,W-M,y-9);y+=2}
+  }
+  return doc.output('arraybuffer');
+}
+function cvDoc(text){const esc=s=>s.replace(/&/g,'&amp;').replace(/</g,'&lt;');
+  const body=text.split('\n').map((l,i)=>i===0?`<h1>${esc(l)}</h1>`:/^[A-ZÀ-ÖØ-Þ0-9 '’&\/-]{4,}$/.test(l.trim())&&l.trim().length<45?`<h2>${esc(l)}</h2>`:l.trim()?`<p>${esc(l)}</p>`:'').join('');
+  return `<html><head><meta charset="utf-8"><style>body{font-family:Calibri,Arial;font-size:11pt}h1{font-size:18pt;margin:0}h2{font-size:12pt;border-bottom:1px solid #0b7a55;margin:12pt 0 4pt}p{margin:0 0 3pt}</style></head><body>${body}</body></html>`}
+async function download(name,data){
+  const d=await getDl();if(!d){toast('Téléchargement indisponible ici : utilisez « Copier »');return}
+  try{await d.save({filename:name,data});toast('Fichier enregistré')}catch(e){toast(e&&e.code==='declined'?'Téléchargement annulé':e&&e.code==='rejected_extension'?'Ce format n\'est pas accepté ici, essayez le PDF':'Téléchargement impossible : utilisez « Copier »')}
+}
+const fileBase=()=>(profil.name||'CV').replace(/[^A-Za-zÀ-ÿ0-9]+/g,'_');
+
+/* ---------- dossier de candidature ---------- */
+function closeDrawer(){$('#drawer').hidden=true;$('#shade').hidden=true;document.body.style.overflow='';CUR=null}
+$('#shade').onclick=closeDrawer;document.addEventListener('keydown',e=>{if(e.key==='Escape'&&!$('#drawer').hidden)closeDrawer()});
+function emailGuesses(f,l,d){f=norm(f).replace(/[^a-z-]/g,'');l=norm(l).replace(/[^a-z-]/g,'');if(!d)return[];
+  const base=f&&l?[`${f}.${l}`,`${f[0]}${l}`,`${f}${l}`,`${f[0]}.${l}`,`${l}.${f}`,`${f}-${l}`,`${f}`]:[];return[...base,'recrutement','rh','emploi','contact'].map(p=>`${p}@${d}`)}
+const atsCache={};try{Object.assign(atsCache,JSON.parse(ls('ld_ats')||'{}'))}catch(e){}
+function saveAtsCache(){const k=Object.keys(atsCache);while(k.length>15)delete atsCache[k.shift()];ls('ld_ats',JSON.stringify(atsCache))}
+const SPLIT='=====CONSEILS=====';
+function openOffer(o){
+  CUR=o;const D=$('#drawer');D.innerHTML='';const co=cleanCo(o.entreprise),direct=safeUrl(o.contact&&o.contact.site),ville=(o.lieu||'').replace(/^\S+\s-\s/,'');
+  const jobTxt=h('textarea',{id:'dJob',rows:'5'});jobTxt.value=`${o.titre}\n${co} · ${o.lieu} · ${o.contrat}\n\n${o.extrait}`;
+  const gauge=h('div',{class:'gauge'}),bar=h('i'),kw=h('div',{class:'kw'}),ghint=h('p',{class:'hint'});
+  const noise=new Set(terms(co+' '+o.lieu));
+  const upd=()=>{const m=matchScore(pisteCv(pSel.value),jobTxt.value,noise);gauge.textContent=m.pct+'%';gauge.style.color=m.pct>=60?'var(--accent)':'var(--signal)';bar.style.width=m.pct+'%';kw.innerHTML='';m.top.forEach(w=>kw.append(h('span',{class:m.ok.includes(w)?'ok':'ko',text:w})));ghint.textContent=!profil.cv?'Importez votre CV dans l\'onglet « Mon CV ».':'Correspondance de votre CV original avec les mots-clés de l\'offre (vert : présent, orange : absent).'};
+  jobTxt.oninput=upd;
+  const pSel=h('select',{id:'dPiste'},...pistes().map(p=>h('option',{value:p.id,text:p.nom})));pSel.value=pisteFor(o);
+  const akey=()=>o.id+'|'+pSel.value;
+  const cvOut=h('div',{class:'out empty',text:profil.cv?'Réécriture de votre CV pour cette offre…':'Importez votre CV dans l\'onglet « Mon CV » : il sera réécrit automatiquement ici pour chaque offre.'});
+  const tipsOut=h('div',{class:'hint mt',style:'white-space:pre-wrap'});
+  const regen=h('button',{class:'btn ghost sm'},'Refaire');
+  const runAts=async()=>{if(!profil.cv)return;tipsOut.textContent='';
+    const r=await ask(`Tu es un recruteur senior français et expert des logiciels de tri de CV (ATS : Taleo, Workday, SmartRecruiters, Teamtailor, Flatchr).
+Réécris le CV ci-dessous pour l'offre ci-dessous.
+Règles strictes :
+- N'invente AUCUNE expérience, entreprise, diplôme, chiffre ou compétence. Reformule uniquement ce qui existe.
+- Texte brut ATS : pas de tableau, pas de colonnes, pas d'emoji, pas de markdown (pas d'astérisques ni de #). Puces avec "- ".
+- Ligne 1 : Prénom Nom. Ligne 2 : intitulé EXACT du poste de l'offre. Ligne 3 : téléphone · e-mail · ville.
+- Sections en MAJUSCULES : PROFIL, COMPÉTENCES CLÉS, EXPÉRIENCE PROFESSIONNELLE, FORMATION, LANGUES ET OUTILS (+ CENTRES D'INTÉRÊT si présents).
+- PROFIL : 3 lignes avec les mots-clés exacts de l'offre.
+- Expériences : intitulé, entreprise, ville, dates, puis 3 à 5 puces avec verbes d'action et le vocabulaire exact de l'annonce.
+- Puis une ligne contenant exactement ${SPLIT}, et après : "Correspondance estimée : X %", "À ajouter seulement si c'est vrai : …", "3 points à mettre en avant en entretien : …".
+Réponds en français.
+
+=== CANDIDAT ===
+${profil.name} · ${profil.tel} · ${profil.mail} · ${profil.city}
+${pisteCv(pSel.value)}
+
+=== SA LETTRE DE MOTIVATION POUR CETTE PISTE (pour le ton et les arguments) ===
+${getPiste(pSel.value).lettre||'—'}
+
+=== OFFRE ===
+${jobTxt.value}`,cvOut,regen,{wait:'Réécriture de votre CV pour cette offre (20 à 60 secondes)…',view:t=>t.split(SPLIT)[0].trim()});
+    if(r){const [cv,tips]=r.split(SPLIT);cvOut.textContent=cv.trim();tipsOut.textContent=(tips||'').trim();atsCache[akey()]={cv:cv.trim(),tips:(tips||'').trim()};saveAtsCache()}};
+  regen.onclick=runAts;
+  const mType=h('select',{id:'dType'},...[['email','E-mail de candidature au recruteur'],['linkedin','Message LinkedIn (300 caractères)'],['call','Script d\'appel au standard / au recruteur'],['lettre','Lettre de motivation courte']].map(([v,t])=>h('option',{value:v,text:t})));
+  const mName=h('input',{id:'dName',placeholder:'si connu'});
+  const msgOut=h('div',{class:'out empty',text:'Le message apparaîtra ici.'});const msgBtn=h('button',{class:'btn'},'Écrire le message');
+  msgBtn.onclick=()=>ask(`Tu es un recruteur français expérimenté. Écris ${MSG_SPEC[mType.value]} pour postuler au poste "${o.titre}" chez ${co||'cette entreprise'} (${o.lieu}), destiné à ${mName.value||'Madame, Monsieur'}.
+Utilise uniquement les faits du CV, n'invente rien. Aucun crochet ni trou à compléter : le texte doit être prêt à envoyer. Ton professionnel, direct, humain. Pas de clichés. Signe avec : ${who()}. Donne seulement le texte final.
+
+=== CV ===
+${pisteCv(pSel.value)}
+
+=== SA LETTRE (reprends ses arguments et son ton) ===
+${getPiste(pSel.value).lettre||'—'}
+
+=== OFFRE ===
+${jobTxt.value}`,msgOut,msgBtn,{fallback:()=>autoFill(TPL.find(x=>x.id===(mType.value==='call'?'appel':'candidature')).txt,{r:mName.value,co,job:o.titre})});
+  const fF=h('input',{placeholder:'Prénom','aria-label':'Prénom du recruteur'}),fL=h('input',{placeholder:'Nom','aria-label':'Nom du recruteur'}),fDom=h('input',{placeholder:'domaine, ex. entreprise.fr','aria-label':'Domaine'}),em=h('div',{class:'emails'});
+  const genEm=()=>{em.innerHTML='';emailGuesses(fF.value,fL.value,fDom.value.trim().replace(/^https?:\/\//,'').replace(/^www\./,'').replace(/\/.*/,'')).forEach(a=>em.append(h('div',null,h('span',{text:a}),h('button',{class:'btn ghost sm',onclick:()=>copy(a)},'Copier'))))};
+  [fF,fL,fDom].forEach(i=>i.oninput=genEm);
+  const coQ=co||o.titre,isMC=o.dept==='MC';
+  D.append(
+    h('div',{class:'head'},h('div',{style:'min-width:0'},h('h2',{id:'dTitle',text:o.titre}),h('div',{class:'hint',style:'margin:4px 0 0'},`${co||'Entreprise non communiquée'} · ${o.lieu} · ${o.contrat} · publiée ${o.publie}`)),h('button',{class:'btn ghost sm',onclick:closeDrawer},'Fermer')),
+    h('div',{class:'step'},h('span',{class:'n',text:'Étape 1 · Votre CV réécrit pour cette offre'}),
+      h('div',{class:'row',style:'align-items:center;margin-bottom:8px'},h('div',null,h('label',{for:'dPiste'},'CV et lettre de départ'),pSel)),
+      h('div',{class:'score'},gauge,h('div',{class:'bar'},bar)),ghint,kw,
+      h('div',{class:'mt'},cvOut),tipsOut,
+      h('div',{class:'toolbar mt'},
+        h('button',{class:'btn',onclick:()=>{if(!atsCache[akey()])return toast('Attendez la fin de la réécriture');download(`${fileBase()}_${norm(o.titre).replace(/[^a-z0-9]+/g,'-').slice(0,40)}.pdf`,cvPdf(atsCache[akey()].cv))}},'Télécharger en PDF'),
+        h('button',{class:'btn ghost sm',onclick:()=>{if(!atsCache[akey()])return toast('Attendez la fin de la réécriture');download(`${fileBase()}_${norm(o.titre).replace(/[^a-z0-9]+/g,'-').slice(0,40)}.doc`,cvDoc(atsCache[akey()].cv))}},'Télécharger en Word'),
+        h('button',{class:'btn ghost sm',onclick:()=>copy(cvOut.textContent)},'Copier'),regen),
+      h('details',{class:'mt'},h('summary',{class:'hint',style:'cursor:pointer'},'Coller l\'annonce complète pour une réécriture encore plus précise'),h('div',{class:'mt'},jobTxt))),
+    h('div',{class:'step'},h('span',{class:'n',text:'Étape 2 · Joindre le recruteur'}),
+      h('div',{class:'contact'},
+        ext(offerUrl(o),'Téléphone et e-mail du recruteur','Sur France Travail, connecté à votre compte : bouton « Postuler »','prime'),
+        direct?ext(direct,'Candidature directe',`Formulaire ${o.source?'de '+o.source:'de l\'employeur'}`,''):null,
+        ext(`https://www.google.com/search?q=${enc(`${coQ} ${ville} téléphone`)}`,'Standard de l\'entreprise','Demandez le service RH'),
+        ext(`https://www.google.com/search?q=${enc(`site:linkedin.com/in "${coQ}" (recrutement OR "talent acquisition" OR RH OR "ressources humaines")`)}`,'Recruteurs sur LinkedIn','Le nom du ou de la RH'),
+        ext(`https://www.google.com/search?q=${enc(`"${coQ}" (recrutement OR rh) email "@"`)}`,'E-mail RH publié','Adresses visibles sur le web'),
+        isMC?ext('https://www.emploi.gouv.mc/','Service de l\'Emploi de Monaco','Obligatoire pour travailler à Monaco'):ext(`https://www.pappers.fr/recherche?q=${enc(coQ)}`,'Fiche entreprise','Dirigeant, effectif, adresse')),
+      h('details',{class:'mt'},h('summary',{class:'hint',style:'cursor:pointer'},'Deviner l\'e-mail direct à partir du nom du recruteur'),h('div',{class:'row mt'},fF,fL,fDom),h('div',{class:'emails mt'},em)),
+      h('p',{class:'note mt'},isMC?'À Monaco, l\'employeur doit déclarer l\'embauche au Service de l\'Emploi : inscrivez-vous-y aussi, c\'est souvent par lui que passent les recrutements.':'France Travail affiche le téléphone et l\'e-mail du recruteur aux candidats connectés, quand l\'employeur les a donnés. Pour une agence d\'intérim, appelez l\'agence : c\'est elle qui recrute.')),
+    h('div',{class:'step'},h('span',{class:'n',text:'Étape 3 · Message de candidature'}),
+      h('div',{class:'row'},h('div',null,h('label',{for:'dType'},'Format'),mType),h('div',null,h('label',{for:'dName'},'Nom du recruteur'),mName)),
+      h('div',{class:'toolbar mt'},msgBtn,h('button',{class:'btn ghost sm',onclick:()=>copy(msgOut.textContent)},'Copier')),h('div',{class:'mt'},msgOut)),
+    h('div',{class:'step'},h('span',{class:'n',text:'Étape 4 · Suivi'}),
+      h('p',{class:'hint'},'Une fois envoyé, ajoutez la candidature : la relance est programmée à J+4 et apparaît dans « À faire aujourd\'hui ».'),
+      h('button',{class:'btn',onclick:()=>{addApp({company:co||'Entreprise',job:o.titre,contact:mName.value,offreId:o.id,url:offerUrl(o),lieu:o.lieu,piste:pSel.value,sal:o.salTxt||''});closeDrawer()}},'J\'ai postulé : ajouter au suivi')));
+  upd();
+  const showCached=()=>{const c=atsCache[akey()];if(c){cvOut.classList.remove('empty');cvOut.textContent=c.cv;tipsOut.textContent=c.tips;return true}return false};
+  pSel.onchange=()=>{if(!showCached())runAts();upd()};
+  if(!showCached())runAts();
+  $('#shade').hidden=false;D.hidden=false;D.scrollTop=0;document.body.style.overflow='hidden';D.querySelector('button').focus();
+}
+const MSG_SPEC={email:'un e-mail de candidature, objet inclus, 120 mots maximum, avec 3 correspondances précises entre le CV et l\'offre, un résultat concret tiré du CV et une demande d\'échange de 10 minutes',linkedin:'un message LinkedIn de 280 caractères maximum',call:'un script d\'appel de 60 secondes (passer le standard, se présenter, une question précise sur le poste, demander un entretien) suivi des réponses à 3 objections : « envoyez votre CV », « le poste est pourvu », « rappelez plus tard »',lettre:'une lettre de motivation de 180 mots maximum, structure vous / moi / nous, sans formule creuse'};
+
+/* ---------- messages (trous complétés automatiquement) ---------- */
+const TPL=[
+ {id:'candidature',t:'Candidature par e-mail',k:'J+0',txt:`Objet : Candidature – {job} – disponible immédiatement
+
+Bonjour {r},
+
+Je vous adresse ma candidature au poste de {job} chez {co}. Mon profil répond à vos attentes : {c1}, {c2} et {c3}.
+
+{real}
+
+Je serais ravi(e) d'en parler 10 minutes avec vous cette semaine. Vous trouverez mon CV en pièce jointe.
+
+Bien cordialement,
+{sig}`},
+ {id:'appel',t:'Appel au standard',k:'J+0',txt:`« Bonjour, {me}. Pourriez-vous me mettre en relation avec la personne qui gère le recrutement du poste de {job} ? »
+
+Au recruteur : « Bonjour {r}, je vous appelle au sujet du poste de {job}. Avez-vous une minute ? J'ai {ans} d'expérience dans {dom}. {real} Je voulais savoir quelles sont les priorités du poste pour les premiers mois. Je vous envoie mon CV aujourd'hui : pourrions-nous fixer un court entretien ? »
+
+Si « envoyez votre CV » : « Bien sûr. À quelle adresse, et à quel nom ? »
+Si « le poste est pourvu » : « Merci. Avez-vous d'autres besoins en {dom}, ou puis-je vous laisser mon CV pour la suite ? »
+Si « rappelez plus tard » : « Avec plaisir, quel jour et à quelle heure vous conviennent ? »`},
+ {id:'relance1',t:'Relance J+4',k:'J+4',txt:`Objet : Re : Candidature – {job}
+
+Bonjour {r},
+
+Je reviens vers vous au sujet de ma candidature au poste de {job}, envoyée le {date}. Je reste très motivé(e) par {co} : mes compétences en {c1} me permettraient d'être opérationnel(le) rapidement.
+
+Je suis disponible pour un échange quand vous le souhaitez.
+
+Bien cordialement,
+{sig}`},
+ {id:'relance2',t:'Deuxième relance J+10',k:'J+10',txt:`Objet : {job} – point sur ma candidature
+
+Bonjour {r},
+
+Sans nouvelles de votre part, je me permets une dernière relance concernant le poste de {job}. Si le poste est pourvu, merci de me le faire savoir. Sinon, je reste disponible dès maintenant pour un entretien, même court, par téléphone.
+
+Bien cordialement,
+{sig}`},
+ {id:'rappel',t:'Après un appel manqué',k:'Rappel',txt:`Bonjour {r},
+
+J'ai essayé de vous joindre aujourd'hui au sujet du poste de {job}. Je vous rappellerai {demain} en fin de matinée, sauf si un autre moment vous convient mieux.
+
+Bien cordialement,
+{sig}`},
+ {id:'confirm',t:'Confirmer un entretien',k:'Entretien',txt:`Objet : Confirmation de l'entretien – {job}
+
+Bonjour {r},
+
+Je vous confirme ma présence à l'entretien du {rdv} pour le poste de {job}. Merci pour votre retour rapide.
+
+À très bientôt,
+{sig}`},
+ {id:'merci',t:'Remerciement après entretien',k:'J+1 entretien',txt:`Objet : Merci pour notre échange – {job}
+
+Bonjour {r},
+
+Merci pour notre entretien. Notre échange a renforcé ma motivation à rejoindre {co}. Avec mon expérience en {c1} et {c2}, je suis convaincu(e) de pouvoir être efficace dès les premières semaines.
+
+Je reste à votre disposition pour toute information.
+
+Bien cordialement,
+{sig}`},
+ {id:'refus',t:'Réponse à un refus',k:'Refus',txt:`Bonjour {r},
+
+Merci de m'avoir informé(e) de votre décision pour le poste de {job}. Pourriez-vous me dire en une ligne ce qui a manqué à ma candidature ? Cela m'aidera beaucoup.
+
+Je reste intéressé(e) par {co} : n'hésitez pas à me recontacter pour un futur poste.
+
+Bien cordialement,
+{sig}`},
+ {id:'spontanee',t:'Candidature spontanée',k:'Sans offre',txt:`Objet : {job} – candidature spontanée
+
+Bonjour {r},
+
+Je vous propose mes compétences de {job} pour renforcer les équipes de {co} : {c1}, {c2} et {c3}. {real}
+
+Puis-je vous appeler 10 minutes cette semaine ?
+
+Bien cordialement,
+{sig}`}];
+function curApp(){const id=$('#mFor').value;return apps.find(a=>a.id===id)||null}
+function autoFill(t,v){
+  const a=profil.analyse||{},c=a.competences||[],tomorrow=new Date(Date.now()+DAY).toLocaleDateString('fr-FR',{weekday:'long',day:'numeric',month:'long'});
+  const job=v.job||a.titre||'',co=v.co||'votre entreprise';
+  if(!job)t=t.replace(/au poste de \{job\}/g,'au poste proposé').replace(/du poste de \{job\}/g,'du poste proposé').replace(/pour le poste de \{job\}/g,'pour le poste').replace(/ – \{job\}/g,'').replace(/compétences de \{job\}/g,'compétences');
+  if(!v.sent)t=t.replace(', envoyée le {date}','');
+  return t.replace(/\{r\}/g,v.r||'Madame, Monsieur').replace(/\{co\}/g,co).replace(/\{job\}/g,job)
+   .replace(/\{c1\}/g,c[0]||'organisation').replace(/\{c2\}/g,c[1]||'relation client').replace(/\{c3\}/g,c[2]||'rigueur')
+   .replace(/\{real\}/g,a.realisation?a.realisation.replace(/\.?$/,'.'):'').replace(/\{ans\}/g,a.annees||'plusieurs années').replace(/\{dom\}/g,a.domaine||'ce métier')
+   .replace(/\{date\}/g,v.sent?new Date(v.sent).toLocaleDateString('fr-FR',{day:'numeric',month:'long'}):'récemment').replace(/\{demain\}/g,tomorrow)
+   .replace(/\{rdv\}/g,v.rdv?fmtDT(v.rdv):'prévu')
+   .replace(/\{me\}/g,profil.name||'votre nom').replace(/\{sig\}/g,[profil.name,profil.tel,profil.mail].filter(Boolean).join(' · ')||'Votre nom · votre téléphone')
+   .replace(/\n{3,}/g,'\n\n');
+}
+function fillCtx(){const a=curApp();return a?{r:$('#mRec').value||a.contact,co:a.company,job:a.job,sent:a.sent,rdv:a.status==='entretien'?a.next:null}:{r:$('#mRec').value}}
+const tplOuts={};
+function renderTpls(){
+  const C=$('#tpls');C.innerHTML='';const v=fillCtx();
+  TPL.forEach(tp=>{const out=h('div',{class:'out',text:autoFill(tp.txt,v)});tplOuts[tp.id]=out;const b=h('button',{class:'btn ghost sm'},'Compléter avec l\'IA');
+    b.onclick=()=>aiTpl(tp,out,b);
+    C.append(h('div',{class:'panel tpl'},h('div',{class:'toolbar',style:'justify-content:space-between'},h('h3',{text:tp.t,style:'margin:0'}),h('span',{class:'tag',text:tp.k})),h('div',{class:'mt'},out),h('div',{class:'toolbar mt'},h('button',{class:'btn sm',onclick:()=>copy(out.textContent)},'Copier'),b)))});
+}
+function aiTpl(tp,out,b){const v=fillCtx();return ask(`Réécris ce message de recherche d'emploi pour qu'il soit unique et prêt à envoyer, à partir du CV et du contexte. Garde l'objectif et une longueur proche. Aucun crochet ni trou : complète tout avec des éléments réels du CV et du contexte. N'invente aucun fait. En français, ton professionnel et humain. Donne seulement le texte final.
+
+Contexte : poste ${v.job||profil.analyse?.titre||'non précisé'} · entreprise ${v.co||'non précisée'} · recruteur ${v.r||'inconnu'} · candidature envoyée ${v.sent?fmtD(v.sent):'—'} · signature ${who()}
+
+=== MESSAGE ===
+${out.textContent}
+
+=== CV ===
+${cvText().slice(0,3500)}`,out,b,{tier:'quick'})}
+$('#mFor').onchange=renderTpls;$('#mRec').oninput=renderTpls;
+$('#mAllAi').onclick=async()=>{const b=$('#mAllAi');b.disabled=true;for(const tp of TPL){await aiTpl(tp,tplOuts[tp.id],null)}b.disabled=false};
+function fillSelects(){
+  for(const id of ['#mFor','#iFor']){const s=$(id),cur=s.value;s.innerHTML='';s.append(h('option',{value:'',text:id==='#mFor'?'Aucune en particulier':'Saisie libre'}));
+    [...apps].sort((a,b)=>b.sent-a.sent).forEach(a=>s.append(h('option',{value:a.id,text:`${a.job} · ${a.company}`})));s.value=apps.some(a=>a.id===cur)?cur:''}
+}
+
+/* ---------- suivi ---------- */
+const ST={envoyee:'Envoyée',relancer:'À relancer',rappeler:'À rappeler',entretien:'Entretien accepté',pourvu:'Poste pourvu / ne recrute plus',refus:'Refusée'};
+let pipeFilter='';
+const isActive=a=>['envoyee','relancer','rappeler','entretien'].includes(a.status);
+function dueNow(a){return isActive(a)&&a.next&&a.next<today0()+DAY}
+function toLocalInput(t){const d=new Date(t);d.setMinutes(d.getMinutes()-d.getTimezoneOffset());return d.toISOString().slice(0,16)}
+function nextLabel(a){
+  if(a.status==='rappeler')return a.next?`Rappeler le ${fmtDT(a.next)}`:'Rappeler : choisissez la date et l\'heure';
+  if(a.status==='entretien')return a.next?`Entretien le ${fmtDT(a.next)}`:'Entretien : indiquez la date et l\'heure';
+  if(a.status==='envoyee'||a.status==='relancer')return a.next?`Relance le ${fmtD(a.next)}`:'';
+  return 'Clôturée';
+}
+function renderApps(){
+  const P=$('#pipe');P.innerHTML='';const counts={};apps.forEach(a=>counts[a.status]=(counts[a.status]||0)+1);const due=apps.filter(dueNow);
+  [['','Toutes',apps.length],['due','À faire aujourd\'hui',due.length],...Object.entries(ST).map(([k,v])=>[k,v,counts[k]||0])].forEach(([k,v,n])=>
+    P.append(h('button',{'aria-pressed':String(pipeFilter===k),onclick:()=>{pipeFilter=k;renderApps()}},h('b',{text:n,style:k==='due'&&n?'color:var(--signal)':''}),h('span',{text:v}))));
+  const L=$('#apps');L.innerHTML='';
+  let list=apps.filter(a=>!pipeFilter||(pipeFilter==='due'?dueNow(a):a.status===pipeFilter));
+  list.sort((a,b)=>(isActive(b)-isActive(a))||((a.next||9e15)-(b.next||9e15)));
+  if(!list.length)L.append(h('div',{class:'empty-state'},apps.length?'Aucune candidature dans cette catégorie.':'Aucune candidature pour l\'instant. Dans « Offres », cliquez sur « Postuler » puis « J\'ai postulé » : la relance à J+4 est programmée automatiquement.'));
+  list.forEach(a=>{
+    const sel=h('select',{'aria-label':'Statut'},...Object.entries(ST).map(([k,v])=>h('option',{value:k,text:v})));sel.value=a.status;
+    const when=h('input',{type:'datetime-local','aria-label':'Date et heure'});if(a.next)when.value=toLocalInput(a.next);
+    when.onchange=()=>{a.next=when.value?new Date(when.value).getTime():null;saveApp(a)};
+    sel.onchange=()=>{a.status=sel.value;
+      if(a.status==='relancer')a.next=today0()+9*3600e3;else if(a.status==='envoyee')a.next=today0()+4*DAY;
+      else if(a.status==='rappeler'||a.status==='entretien'){a.next=a.next&&a.next>Date.now()?a.next:null;toast('Indiquez la date et l\'heure')}else a.next=null;
+      a.hist=[...(a.hist||[]),{t:Date.now(),s:a.status}].slice(-20);saveApp(a)};
+    const notes=h('textarea',{rows:'2','aria-label':'Notes',placeholder:'Notes : nom du contact, ce qui a été dit…'});notes.value=a.notes||'';notes.onchange=()=>{a.notes=notes.value;saveApp(a)};
+    const ctx={r:a.contact,co:a.company,job:a.job,sent:a.sent,rdv:a.status==='entretien'?a.next:null};
+    const msgOut=h('div',{class:'out empty',text:'Choisissez un message ci-dessus.'});
+    const tplBtns=[['relance1','Relance J+4'],['relance2','Relance J+10'],['rappel','Appel manqué'],['confirm','Confirmer entretien'],['merci','Remerciement'],['refus','Réponse à un refus']].map(([id,l])=>h('button',{class:'btn ghost sm',onclick:()=>{msgOut.classList.remove('empty');msgOut.textContent=autoFill(TPL.find(x=>x.id===id).txt,ctx)}},l));
+    const aiBtn=h('button',{class:'btn sm'},'Rédiger avec l\'IA');
+    aiBtn.onclick=()=>ask(`Rédige le prochain message de suivi pour cette candidature, adapté à son statut. Court, poli, efficace, en français, prêt à envoyer (aucun crochet). N'invente rien. Donne seulement le texte final (objet inclus si e-mail).
+Statut : ${ST[a.status]} · Entreprise : ${a.company} · Poste : ${a.job} · Contact : ${a.contact||'inconnu'} · Envoyée le ${fmtD(a.sent)} · Prochaine date : ${a.next?fmtDT(a.next):'—'} · Notes : ${a.notes||'aucune'}
+Signature : ${who()}
+CV : ${pisteCv(a.piste).slice(0,2500)}`,msgOut,aiBtn,{tier:'quick'});
+    const due=dueNow(a);
+    L.append(h('article',{class:'app','data-s':a.status},
+      h('div',{style:'min-width:0'},h('h3',{text:a.job,style:'margin:0;font-family:var(--body);font-size:16px'}),h('div',{class:'co'},h('b',{text:a.company}),a.lieu?' · '+a.lieu:'',a.contact?' · '+a.contact:'',a.sal?' · '+a.sal:''),a.piste?h('span',{class:'tag mut',style:'margin-top:4px',text:getPiste(a.piste).nom}):null,
+        h('div',{class:due?'due':'next',style:'margin-top:6px'},(due?'À faire : ':'')+nextLabel(a)),
+        h('div',{class:'hint',style:'margin:4px 0 0'},`Envoyée le ${fmtD(a.sent)}`,safeUrl(a.url)?h('span',null,' · ',h('a',{href:a.url,target:'_blank',rel:'noopener',style:'color:var(--accent)'},'voir l\'offre')):null,
+          a.status==='entretien'?h('span',null,' · ',h('a',{href:'#',style:'color:var(--accent)',onclick:e=>{e.preventDefault();$('#iFor').value=a.id;$('#iFor').onchange();showTab('entretien')}},'préparer l\'entretien')):null)),
+      h('div',{class:'f',style:'gap:6px'},sel,isActive(a)?when:null),
+      h('details',null,h('summary',null,'Notes, messages de relance et suppression'),h('div',{class:'f mt'},notes,h('div',{class:'toolbar'},...tplBtns,aiBtn),msgOut,h('div',{class:'toolbar'},h('button',{class:'btn ghost sm',onclick:()=>copy(msgOut.textContent)},'Copier le message'),h('button',{class:'btn ghost sm',onclick:()=>delApp(a)},'Supprimer cette candidature'))))));
+  });
+  $('#kTotal').textContent=apps.length;$('#kDue').textContent=due.length;$('#kInt').textContent=apps.filter(a=>a.status==='entretien').length;
+  const tb=$('#tabDue');tb.hidden=!due.length;tb.textContent=due.length;
+}
+function localSave(){ls('ld_apps2',JSON.stringify(apps))}
+async function saveApp(a){if(db&&uid){try{await db.doc(`data/users/${uid}/profil/apps/${a.id}`).set(a)}catch(e){toast('Enregistrement impossible, réessayez')}}else{localSave();refreshApps()}}
+async function delApp(a){if(db&&uid){try{await db.doc(`data/users/${uid}/profil/apps/${a.id}`).delete()}catch(e){toast('Suppression impossible')}}else{apps=apps.filter(x=>x!==a);localSave();refreshApps()}}
+function addApp(p){
+  const a={id:Date.now().toString(36)+Math.random().toString(36).slice(2,6),company:p.company,job:p.job,contact:p.contact||'',offreId:p.offreId||'',url:p.url||'',lieu:p.lieu||'',piste:p.piste||'',sal:p.sal||'',notes:'',sent:Date.now(),next:today0()+4*DAY,status:'envoyee',hist:[{t:Date.now(),s:'envoyee'}]};
+  if(!(db&&uid))apps.push(a);saveApp(a);toast('Ajouté au suivi · relance le '+fmtD(a.next));
+}
+$('#addForm').addEventListener('submit',e=>{e.preventDefault();addApp({company:$('#tCompany').value.trim(),job:$('#tJob').value.trim(),contact:$('#tContact').value.trim()});e.target.reset()});
+function refreshApps(){renderApps();fillSelects();renderTpls();if(OFFRES.length)renderOffres()}
+
+/* ---------- entretien ---------- */
+const TYPES=['Téléphonique','RH','Manager','Visio','Collectif / job dating'],LEVELS=['Bienveillant','Standard','Exigeant'];
+let iType='RH',iLevel='Standard';
+function seg(el,vals,get,set){el.innerHTML='';vals.forEach(v=>el.append(h('button',{type:'button','aria-pressed':String(get()===v),onclick:()=>{set(v);seg(el,vals,get,set)}},v)))}
+seg($('#iType'),TYPES,()=>iType,v=>iType=v);seg($('#iLevel'),LEVELS,()=>iLevel,v=>iLevel=v);
+$('#iFor').onchange=()=>{const a=apps.find(x=>x.id===$('#iFor').value);if(a){$('#iJob').value=a.job;$('#iCo').value=a.company}};
+const iCtx=()=>`Poste : ${$('#iJob').value||profil.analyse?.titre||'non précisé'} · Entreprise : ${$('#iCo').value||'non précisée'} · Lieu : ${profil.city||'Alpes-Maritimes / Monaco'} · Type d'entretien : ${iType} · Niveau du recruteur : ${iLevel}`;
+$('#iPrep').onclick=()=>ask(`Tu es un coach en recrutement français très expérimenté. Rédige une fiche de préparation d'entretien COMPLÈTE et personnalisée.
+${iCtx()}
+Sections (titres en MAJUSCULES, texte brut sans markdown) :
+1. CE QUE LE RECRUTEUR VEUT VÉRIFIER (5 points pour ce poste)
+2. MON PITCH (90 secondes, rédigé à la première personne à partir du CV)
+3. LES 12 QUESTIONS LES PLUS PROBABLES pour ce poste et ce type d'entretien, chacune avec une réponse modèle rédigée à partir du CV (méthode STAR quand c'est pertinent)
+4. LES 5 QUESTIONS PIÈGES pour ce profil précis (points faibles du CV, trous, reconversion, surqualification…) avec la réponse
+5. QUESTIONS DE MISE EN SITUATION du métier avec la bonne approche
+6. SALAIRE : fourchette réaliste pour ce poste dans les Alpes-Maritimes / à Monaco et comment l'annoncer
+7. 4 QUESTIONS À POSER AU RECRUTEUR
+8. CHECK-LIST DU JOUR J (tenue adaptée au secteur, documents, horaires, spécificités ${iType.toLowerCase()})
+9. APRÈS L'ENTRETIEN (remerciement, relance)
+N'invente aucune expérience. En français.
+
+CV :
+${cvText()}`,$('#prepOut'),$('#iPrep'),{wait:'Rédaction de votre fiche (30 à 90 secondes)…'});
+$('#iPrepCopy').onclick=()=>copy($('#prepOut').textContent);
+$('#iPrepDl').onclick=()=>{const t=$('#prepOut').textContent;if($('#prepOut').classList.contains('empty'))return toast('Générez d\'abord la fiche');download(`Preparation_entretien_${fileBase()}.pdf`,cvPdf('Préparation entretien – '+($('#iJob').value||'')+'\n'+t))};
+
+let chatHist=[],qCount=0;
+function bubble(box,role,text){const b=h('div',{class:'msg '+(role==='assistant'?'ai':'me'),text});box.append(b);box.scrollTop=1e6;return b}
+function simRules(){return`Tu joues un recruteur français qui fait passer un entretien d'embauche réaliste.
+${iCtx()}
+CV du candidat : ${cvText().slice(0,3500)}
+Règles : une seule question à la fois, adaptée au poste, au type d'entretien et au CV (tu peux relancer sur une réponse floue, comme un vrai recruteur, et poser des mises en situation du métier). Niveau ${iLevel} : ${iLevel==='Exigeant'?'tu creuses les points faibles et tu insistes':iLevel==='Bienveillant'?'tu mets à l\'aise':'neutre et professionnel'}.
+Après chaque réponse du candidat, écris d'abord un retour court entre crochets : [Note X/10 · Point fort : … · À améliorer : … · Formulation conseillée : …], puis enchaîne avec la question suivante en restant dans ton rôle.
+Quand le candidat demande le bilan ou après 10 questions : bilan final avec note globale, 3 forces, 3 priorités, et la décision probable du recruteur.
+En français.`}
+async function simTurn(btn,extra){
+  const box=$('#chat'),ai=bubble(box,'assistant','…');if(btn)btn.disabled=true;
+  try{const s=await getSample();if(!s)throw{code:'unavailable'};
+    const msgs=[{role:'user',content:simRules()+'\n\nCommence l\'entretien : accueille le candidat et pose ta première question.'},...chatHist];
+    if(extra)msgs.push({role:'user',content:extra});
+    const r=await s(msgs,{modelTier:'default',cache:false,onText:({text})=>{ai.textContent=text;box.scrollTop=1e6}});
+    chatHist.push({role:'assistant',content:r.text});
+  }catch(e){ai.textContent=aiErr(e);}
+  finally{if(btn)btn.disabled=false}
+}
+$('#iStart').onclick=()=>{$('#chat').innerHTML='';chatHist=[];qCount=0;$('#iForm').hidden=false;$('#iEnd').hidden=false;
+  simTurn($('#iStart')).then(()=>{if(chatHist.length){const first=chatHist.pop();chatHist=[{role:'user',content:'(Je suis prêt.)'},first]}})};
+$('#iForm').addEventListener('submit',e=>{e.preventDefault();const t=$('#iAns').value.trim();if(!t)return;
+  if(!chatHist.length)chatHist=[{role:'user',content:'(Je suis prêt.)'},{role:'assistant',content:'Présentez-vous.'}];
+  chatHist.push({role:'user',content:t});bubble($('#chat'),'user',t);$('#iAns').value='';simTurn(e.submitter)});
+$('#iEnd').onclick=()=>{if(!chatHist.length)return;chatHist.push({role:'user',content:'Merci. Pouvez-vous me donner le bilan complet de cet entretien ?'});bubble($('#chat'),'user','Voir mon bilan');simTurn($('#iEnd'))};
+
+const QAS={
+ 'Les incontournables':[
+  ['Présentez-vous.','90 secondes : votre métier aujourd\'hui, 2 réussites concrètes, pourquoi ce poste maintenant.'],
+  ['Pourquoi ce poste ? Pourquoi notre entreprise ?','Un fait précis sur l\'entreprise relié à ce que vous savez faire.'],
+  ['Quelles sont vos qualités ?','3 qualités, chacune prouvée par un exemple court.'],
+  ['Quels sont vos défauts ?','Un vrai défaut non bloquant pour le poste, et ce que vous faites pour le corriger.'],
+  ['Pourquoi avez-vous quitté votre dernier poste ?','Positif et tourné vers l\'avenir : ce que vous cherchez, pas ce que vous fuyez.']],
+ 'Expérience et comportement':[
+  ['Racontez une situation difficile que vous avez gérée.','Méthode STAR : Situation, Tâche, Action (au « je »), Résultat.'],
+  ['Parlez-moi d\'un conflit avec un collègue ou un client.','Montrez l\'écoute, la solution trouvée, et la relation préservée.'],
+  ['Quelle est votre plus grande réussite ?','Un résultat mesurable, et ce qu\'il dit de vous pour ce poste.'],
+  ['Comment gérez-vous le stress et les rushs ?','Un exemple réel : saison, inventaire, fin de mois, rush du service.']],
+ 'Questions pièges':[
+  ['Comment expliquez-vous ce trou dans votre CV ?','Une phrase factuelle, puis ce que vous avez fait ou appris pendant cette période.'],
+  ['Vous n\'êtes pas un peu surqualifié(e) ?','Rassurez sur la stabilité et la motivation pour CE poste.'],
+  ['Pourquoi devrions-nous vous choisir vous ?','3 arguments liés aux besoins de l\'offre.'],
+  ['Avez-vous d\'autres processus en cours ?','Oui, sans détails, et ce poste reste votre priorité.']],
+ 'Salaire, disponibilité, conditions':[
+  ['Quelles sont vos prétentions salariales ?','Une fourchette en brut, basée sur le marché local, avec une partie haute légèrement au-dessus de votre objectif.'],
+  ['Quand pouvez-vous commencer ?','Date précise. Disponible immédiatement est un vrai atout, dites-le.'],
+  ['Êtes-vous mobile ? Avez-vous le permis ?','Trajets dans le 06 et vers Monaco : soyez précis sur votre moyen de transport.'],
+  ['Travailler le week-end ou en saison vous convient-il ?','Fréquent sur la Côte d\'Azur : montrez votre flexibilité honnêtement.']],
+ 'Pour finir':[
+  ['Avez-vous des questions ?','Toujours oui : « À quoi ressemble une réussite dans ce poste à 3 mois ? », « Quelle est la suite ? ».'],
+  ['Où vous voyez-vous dans 5 ans ?','Évolution dans l\'entreprise, en lien avec le poste.']]};
+for(const[cat,qs]of Object.entries(QAS)){
+  $('#qas').append(h('div',{class:'qcat'},h('h3',{text:cat}),...qs.map(([q,m])=>{const out=h('div',{class:'out',hidden:true});const b=h('button',{class:'btn ghost sm'},'Ma réponse');
+    b.onclick=()=>{out.hidden=false;ask(`Rédige la réponse idéale du candidat à la question d'entretien « ${q} », à la première personne, 120 mots maximum, naturelle à l'oral, à partir de son CV uniquement (n'invente rien). Méthode : ${m}
+${iCtx()}
+CV : ${cvText().slice(0,3500)}`,out,b,{tier:'quick'})};
+    return h('details',{class:'qa'},h('summary',{text:q}),h('p',{text:m}),h('div',{class:'toolbar mt'},b),out)})));
+}
+let coachHist=[];
+$('#coachForm').addEventListener('submit',async e=>{e.preventDefault();const q=$('#coachQ').value.trim();if(!q)return;$('#coachQ').value='';
+  const box=$('#coachChat');bubble(box,'user',q);coachHist.push({role:'user',content:q});const ai=bubble(box,'assistant','…');const btn=e.submitter;btn.disabled=true;
+  try{const s=await getSample();if(!s)throw{code:'unavailable'};
+    const msgs=[{role:'user',content:`Tu es un coach emploi et recrutement français, concret et bienveillant, qui connaît le marché des Alpes-Maritimes et de Monaco. Réponds court, avec des formulations prêtes à dire. Contexte : ${iCtx()}. CV : ${cvText().slice(0,2500)}`},{role:'assistant',content:'Entendu, je vous écoute.'},...coachHist];
+    const r=await s(msgs,{modelTier:'default',cache:false,onText:({text})=>{ai.textContent=text;box.scrollTop=1e6}});coachHist.push({role:'assistant',content:r.text});
+  }catch(err){ai.textContent=aiErr(err);coachHist.pop()}finally{btn.disabled=false}});
+
+/* ---------- pistes ---------- */
+function renderPistes(){const s=$('#pvSel'),cur=s.value||'dg';s.innerHTML='';pistes().forEach(p=>s.append(h('option',{value:p.id,text:p.nom})));s.value=cur;const p=getPiste(s.value);$('#pvCv').value=p.cv||'';$('#pvLet').value=p.lettre||''}
+$('#pvSel').onchange=renderPistes;
+$('#pvSave').onclick=async()=>{const id=$('#pvSel').value;const list=pistes().map(p=>p.id===id?Object.assign({},p,{cv:$('#pvCv').value.trim(),lettre:$('#pvLet').value.trim()}):p);profil.pistes=list.map(({id,nom,cv,lettre})=>({id,nom,cv,lettre}));await persist();toast('Piste enregistrée')};
+async function importInto(file,el){if(!file)return;try{const t=await extractText(file);el.value=t;toast('Texte importé : vérifiez-le puis enregistrez')}catch(e){toast('Impossible de lire ce fichier')}}
+$('#pvFile').onchange=e=>importInto(e.target.files[0],$('#pvCv'));$('#pvFileL').onchange=e=>importInto(e.target.files[0],$('#pvLet'));
+/* ---------- rafraîchissement global ---------- */
+function refreshAll(){
+  prepMatch();renderAnalyse();
+  $('#cvNudge').hidden=!!profil.cv;
+  const a=profil.analyse;$('#recoBox').hidden=!(cvTerms&&OFFRES.length);
+  if(cvTerms&&OFFRES.length){const n=OFFRES.filter(o=>inZone(o,'06,MC')&&offerScore(o)>=20).length;$('#recoTxt').textContent=`${n} offres du 06 et de Monaco correspondent à votre CV${a?.titre?' ('+a.titre+')':''}.`}
+  renderOffres();renderTpls();
+}
+function renderProfil(){renderPistes();$('#pName').value=profil.name||'';$('#pTel').value=profil.tel||'';$('#pMail').value=profil.mail||'';$('#pCity').value=profil.city||'';$('#pCv').value=profil.cv||'';$('#pHint').textContent=profil.cv?'CV enregistré.':'Aucun CV enregistré.'}
+
+try{profil=Object.assign(profil,JSON.parse(ls('ld_profil')||'{}'))}catch(e){}
+try{apps=JSON.parse(ls('ld_apps2')||'[]')}catch(e){apps=[]}
+$('#storeHint').textContent='Suivi enregistré dans ce navigateur.';
+renderProfil();renderApps();fillSelects();refreshAll();
+(async()=>{
+  if(!window.claude)return;
+  try{
+    const [d,u]=await Promise.all([claude.use('db'),claude.use('user')]);
+    if(!d||!u)return;const id=await u.id();if(!id)return;
+    try{d.doc(`data/users/${id}/profil`);d.collection(`data/users/${id}/profil/apps`)}catch(e){return}
+    db=d;uid=id;if(window.__dbReady)window.__dbReady();
+    db.collection(`data/users/${uid}/profil/apps`).onSnapshot(s=>{const OLD={a:'envoyee',b:'relancer',c:'entretien',d:'refus'};apps=s.docs.map(x=>{const v={id:x.id,...x.data()};if(OLD[v.status])v.status=OLD[v.status];return v});refreshApps();
+      $('#storeHint').textContent='Suivi enregistré dans votre compte : privé, visible par vous seul, sur tous vos appareils.'},()=>{});
+    db.doc(`data/users/${uid}/profil`).onSnapshot(s=>{if(s.exists){const local=profil;profil=Object.assign({name:'',tel:'',mail:'',city:'',cv:'',analyse:null},s.data());renderProfil();refreshAll()}
+      else if(profil.cv){persist()}},()=>{});
+  }catch(e){}
+})();
+</script>
+<script>
+/* ===== Indépendante ===== */
+const PST={contacter:'À contacter',contacte:'Contacté',relancer:'À relancer',rdv:'Rendez-vous',envoye:'Devis / dossier envoyé',gagne:'Mission ou habilitation obtenue',refus:'Pas de suite'};
+const PKIND={mission:'Mission',org:'Organisme de formation',cert:'Certificateur'};
+let prospects=[],ORGS=null,CERTS=null,ipTab='missions',orgShown=30,certShown=30,ppFilter='';
+const OFFRE_PRESTA0=`(Voir la lettre et le CV de la piste « Préparation aux certifications » dans « Mon CV ».)`;
+const OFFRE_PRESTA_get=()=>getPiste('presta').lettre||OFFRE_PRESTA0;
+function indNav(){const n=$('#indNav');n.innerHTML='';
+  const miss=OFFRES.filter(isMission).length;
+  [['missions','Missions',miss],['orgs','Organismes & CFA du 06',ORGS?ORGS.length:'…'],['certs','Certificateurs : jury & contrôle',CERTS?CERTS.length:'…'],['pipe','Mon pipeline',prospects.length]].forEach(([k,l,c])=>
+    n.append(h('button',{'aria-pressed':String(ipTab===k),onclick:()=>{ipTab=k;showIp()}},l,h('b',{text:c}))));}
+function showIp(){$$('[data-ip]').forEach(s=>s.hidden=s.dataset.ip!==ipTab);indNav();
+  if(ipTab==='missions')renderMiss();if(ipTab==='orgs')loadOrgs();if(ipTab==='certs')loadCerts();if(ipTab==='pipe')renderPipe()}
+const inPipe=(kind,ref)=>prospects.find(p=>p.kind===kind&&p.ref===ref);
+function pipeBtn(kind,ref,nom,extra){const p=inPipe(kind,ref);
+  return p?h('span',{class:'tag',text:PST[p.status]}):h('button',{class:'btn ghost sm',onclick:()=>addProspect({kind,ref,nom,...extra})},'Ajouter au pipeline')}
+const MKEEP=/forma(teur|trice)|jury|[ée]valuat|examinat|surveillan|correct|recrutement|coach(?! sporti)|professeur|enseignant|intervenant|tuteur|accompagn|bilan de comp|vae|consultant(e)? (en |rh|formation|management)|p[ée]dagog/i;
+const MNO=/immobili|patrimoine|sporti|auto-?[ée]cole|conduite|poids lourds|esth[ée]ti|fitness|yoga|m[ée]decin|infirmi|ar[ôo]me|technicien|biologique|logistique|caces|surface|cuisine|habilitation [ée]lectrique|psycholog|chauffeur|soutien scolaire|aide aux devoirs/i;
+const isMission=o=>o.free&&MKEEP.test(o.titre)&&!MNO.test(o.titre);
+function zoneRank(o){const d=o.dept||'';return d==='06'||d==='MC'?0:['13','83','84','04','05'].includes(d)?1:2}
+
+/* missions */
+function renderMiss(){const L=$('#missList');L.innerHTML='';
+  const ms=OFFRES.filter(isMission).sort((a,b)=>zoneRank(a)-zoneRank(b));
+  if(!ms.length){L.append(h('div',{class:'empty-state'},'Aucune mission pour l\'instant. La collecte de chaque matin en ajoute.'));return}
+  ms.forEach(o=>{const direct=safeUrl(o.contact&&o.contact.site),co=cleanCo(o.entreprise);
+    const out=h('div',{class:'out',hidden:true});const b=h('button',{class:'btn sm'},'Rédiger ma proposition');
+    b.onclick=()=>{out.hidden=false;ask(`Rédige une réponse courte (150 mots maximum, objet inclus) d'une consultante indépendante à cette mission. Elle se positionne en prestataire (facture via sa structure), met en avant 3 éléments de son parcours directement utiles pour cette mission, propose un échange de 15 minutes et indique ses disponibilités à préciser. N'invente rien. Aucun crochet : texte prêt à envoyer. Signature : ${who()}.
+
+Mission : ${o.titre} · ${co} · ${o.lieu} · ${o.contrat}
+${o.extrait}
+
+Son offre : ${OFFRE_PRESTA_get()}
+Son CV : ${cvText().slice(0,2500)}`,out,b)};
+    L.append(h('article',{class:'offer'},
+      h('div',null,h('h3',{text:o.titre}),h('div',{class:'co'},h('b',{text:co||'Organisme non communiqué'}),' · ',o.lieu)),
+      h('div',{class:'side'},h('span',{class:'tag info',text:(o.contrat||'').split(' - ')[0]}),zoneRank(o)===0?h('span',{class:'tag hot',text:'06 / Monaco'}):null,h('span',{class:'tag mut',text:o.publie||''})),
+      h('p',{text:o.extrait}),
+      h('div',{class:'acts'},b,h('a',{class:'btn ghost sm',href:offerUrl(o),target:'_blank',rel:'noopener'},'Voir l\'offre et le contact'),direct?h('a',{class:'btn ghost sm',href:direct,target:'_blank',rel:'noopener'},'Postuler chez l\'organisme'):null,
+        h('button',{class:'btn ghost sm',onclick:()=>copy(out.textContent)},'Copier'),pipeBtn('mission',o.id,`${o.titre} · ${co}`,{url:offerUrl(o),lieu:o.lieu})),
+      h('div',{style:'grid-column:1/-1'},out)))});
+}
+
+/* organismes */
+function loadOrgs(){if(ORGS){renderOrgs();return}$('#orgList').innerHTML='';$('#orgList').append(h('div',{class:'empty-state'},'Chargement…'));
+  fetch('data/organismes06.json').then(r=>r.json()).then(d=>{ORGS=d;indNav();renderOrgs()}).catch(()=>{$('#orgList').innerHTML='';$('#orgList').append(h('div',{class:'empty-state'},'Liste indisponible, rechargez la page.'))})}
+const cp5=c=>String(c||'').padStart(5,'0');
+function renderOrgs(){const L=$('#orgList');L.innerHTML='';const q=norm($('#oq').value).split(/\s+/).filter(Boolean),t=$('#ot').value,s=$('#os').value;
+  const res=ORGS.filter(o=>{if(t==='cfa'&&!o.cfa)return false;if(t==='vae'&&!o.vae)return false;const p=inPipe('org',o.id);if(s==='new'&&p)return false;if(s==='pipe'&&!p)return false;
+    if(q.length){const hay=o._n||(o._n=norm(o.nom+' '+o.ville+' '+o.spe.join(' ')));if(!q.every(w=>hay.includes(w)))return false}return true});
+  $('#orgCount').textContent=`${res.length} organismes`;
+  res.slice(0,orgShown).forEach(o=>{
+    const out=h('div',{class:'out',hidden:true});const b=h('button',{class:'btn sm'},'E-mail de prospection');
+    b.onclick=()=>{out.hidden=false;ask(`Rédige un e-mail de prospection (130 mots maximum, objet inclus) d'une consultante indépendante à la direction pédagogique de cet organisme de formation. Adapte l'accroche à ce qu'il fait (spécialités, CFA ou non, VAE) et propose une prestation concrète utile pour lui (oraux blancs avant les sessions d'examen, préparation au dossier professionnel, atelier collectif…). Termine par une proposition d'échange de 15 minutes. N'invente aucun fait sur l'organisme. Aucun crochet. Signature : ${who()}.
+
+Organisme : ${o.nom} · ${o.ville} · spécialités : ${o.spe.join(', ')} · ${o.cfa?'CFA (apprentissage)':'organisme de formation'}${o.vae?' · accompagnement VAE':''} · ${o.stag} stagiaires déclarés
+
+Son offre : ${OFFRE_PRESTA_get()}`,out,b)};
+    const qn=`"${o.nom}" ${o.ville}`;
+    L.append(h('article',{class:'offer org'},
+      h('div',null,h('h3',{text:o.nom}),h('div',{class:'co'},`${o.adr?o.adr+', ':''}${cp5(o.cp)} ${o.ville}`)),
+      h('div',{class:'side'},o.cfa?h('span',{class:'tag hot',text:'CFA'}):null,o.vae?h('span',{class:'tag info',text:'VAE'}):null,o.stag?h('span',{class:'tag mut',text:`${o.stag.toLocaleString('fr-FR')} stagiaires`}):null),
+      h('p',{text:o.spe.join(' · ')}),
+      h('div',{class:'acts'},b,
+        h('a',{class:'btn ghost sm',target:'_blank',rel:'noopener',href:`https://www.google.com/search?q=${enc(qn+' formation site officiel')}`},'Site et téléphone'),
+        h('a',{class:'btn ghost sm',target:'_blank',rel:'noopener',href:`https://www.google.com/search?q=${enc(`site:linkedin.com/in "${o.nom}" (directeur OR directrice OR "responsable pédagogique" OR "coordinateur pédagogique")`)}`},'Direction pédagogique (LinkedIn)'),
+        h('button',{class:'btn ghost sm',onclick:()=>copy(out.textContent)},'Copier'),pipeBtn('org',o.id,o.nom,{lieu:o.ville})),
+      h('div',{style:'grid-column:1/-1'},out)))});
+  $('#orgMore').hidden=res.length<=orgShown;
+}
+['#oq','#ot','#os'].forEach(s=>$(s).addEventListener('input',()=>{orgShown=30;renderOrgs()}));$('#orgMore').onclick=()=>{orgShown+=30;renderOrgs()};
+
+/* certificateurs */
+function loadCerts(){if(CERTS){renderCerts();return}$('#certList').innerHTML='';$('#certList').append(h('div',{class:'empty-state'},'Chargement…'));
+  fetch('data/certificateurs.json').then(r=>r.json()).then(d=>{CERTS=d.filter(c=>c.type!=='titrepro');$('#certTotal').textContent=CERTS.length;indNav();renderCerts()}).catch(()=>{$('#certList').innerHTML='';$('#certList').append(h('div',{class:'empty-state'},'Liste indisponible, rechargez la page.'))})}
+const fcUrl=n=>{const m=/^(RNCP|RS)(\d+)$/.exec(n||'');return m?`https://www.francecompetences.fr/recherche/${m[1].toLowerCase()}/${m[2]}/`:null};
+const TYPEL={prive:'Privé',consulaire:'Consulaire',public:'Public'};
+function certMsg(c,role,out,b){ask(`Rédige une candidature spontanée (150 mots maximum, objet inclus) adressée au service certification ou examens de ce certificateur, pour devenir ${role}. Mets en avant les éléments de son CV utiles pour ce rôle (habilitations de jury, expérience de direction, connaissance des référentiels et de l'évaluation, langues, localisation et disponibilité) et sa règle déontologique si elle figure dans son CV. Cite une ou deux de ses certifications ci-dessous qui correspondent à son expérience. N'invente rien. Aucun crochet. Signature : ${who()}.
+
+Certificateur : ${c.nom}
+Certifications : ${c.certifs.slice(0,6).map(f=>`${f.t} (${f.n}, niveau ${f.niv||'—'})`).join(' ; ')}
+
+Son CV : ${cvText().slice(0,2000)}`,out,b)}
+function renderCerts(){const L=$('#certList');L.innerHTML='';const q=norm($('#cq').value).split(/\s+/).filter(Boolean),t=$('#ct').value,s=$('#cs').value;
+  const res=CERTS.filter(c=>{if(t==='rs'){if(!c.rs)return false}else if(t&&c.type!==t)return false;const p=inPipe('cert',c.id);if(s==='new'&&p)return false;if(s==='pipe'&&!p)return false;
+    if(q.length){const hay=c._n||(c._n=norm(c.nom+' '+c.certifs.map(f=>f.t+' '+f.n).join(' ')));if(!q.every(w=>hay.includes(w)))return false}return true});
+  $('#certCount').textContent=`${res.length} certificateurs`;
+  res.slice(0,certShown).forEach(c=>{
+    const out=h('div',{class:'out',hidden:true});
+    const role=h('select',{'aria-label':'Rôle visé'},...[['membre de jury','Jurée'],['évaluatrice / correctrice','Évaluatrice'],['auditrice des centres d\'examen et contrôleuse des sessions d\'examen','Contrôleuse de sessions'],['surveillante de sessions d\'examen','Surveillante']].map(([v,l])=>h('option',{value:v,text:l})));
+    const b=h('button',{class:'btn sm'},'Rédiger ma candidature');b.onclick=()=>{out.hidden=false;certMsg(c,role.value,out,b)};
+    let host='';try{host=c.site?new URL(c.site).hostname.replace(/^www\./,''):''}catch(e){}
+    L.append(h('article',{class:'offer org'},
+      h('div',null,h('h3',{text:c.nom}),h('div',{class:'co'},`${c.nb} certification${c.nb>1?'s':''} dans vos domaines${c.rs?` · dont ${c.rs} au Répertoire spécifique`:''}`)),
+      h('div',{class:'side'},h('span',{class:'tag'+(c.type==='prive'?'':' mut'),text:TYPEL[c.type]||c.type}),c.rs?h('span',{class:'tag info',text:'Tests / RS'}):null),
+      h('ul',{class:'certs'},...c.certifs.slice(0,4).map(f=>{const u=fcUrl(f.n);return h('li',null,u?h('a',{href:u,target:'_blank',rel:'noopener',style:'color:var(--accent)'},f.n):f.n,` · ${f.t}${f.niv?' · niveau '+f.niv:''}`)})),
+      h('div',{class:'acts'},role,b,
+        h('a',{class:'btn ghost sm',target:'_blank',rel:'noopener',href:`https://www.google.com/search?q=${enc((host?`site:${host} `:`"${c.nom}" `)+'(jury OR "devenir évaluateur" OR examinateur OR "centre d\'examen" OR auditeur)')}`},'Page jury / évaluateurs'),
+        c.site?h('a',{class:'btn ghost sm',target:'_blank',rel:'noopener',href:c.site},'Site'):null,
+        h('button',{class:'btn ghost sm',onclick:()=>copy(out.textContent)},'Copier'),pipeBtn('cert',c.id,c.nom,{})),
+      h('div',{style:'grid-column:1/-1'},out)))});
+  $('#certMore').hidden=res.length<=certShown;
+}
+['#cq','#ct','#cs'].forEach(s=>$(s).addEventListener('input',()=>{certShown=30;renderCerts()}));$('#certMore').onclick=()=>{certShown+=30;renderCerts()};
+function institMsg(kind){const out=h('div',{class:'out'});const box=$('#certList');box.prepend(h('div',{class:'panel'},h('h3',{text:kind==='dreets'?'Demande à la DREETS PACA':'Demande à l\'académie de Nice'}),out,h('div',{class:'toolbar mt'},h('button',{class:'btn sm',onclick:()=>copy(out.textContent)},'Copier'))));
+  ask(kind==='dreets'?`Rédige un e-mail (150 mots maximum, objet inclus) au service certification de la DREETS Provence-Alpes-Côte d'Azur. La candidate demande à devenir membre de jury, ou l'extension de son habilitation si son CV en mentionne une, pour des titres professionnels de son champ (cite-en 3 pertinents : Responsable d'établissement marchand, Manager d'unité marchande, Assistant de direction ou Formateur professionnel d'adultes) et sa disponibilité pour des sessions dans les Alpes-Maritimes. Elle joint son CV. N'invente rien d'autre. Aucun crochet. Signature : ${who()}. CV : ${cvText().slice(0,2000)}`
+   :`Rédige un e-mail (150 mots maximum, objet inclus) à la division des examens et concours de l'académie de Nice : candidature comme membre de jury professionnel pour les BTS du tertiaire (MCO, NDRC, GPME, SAM) et les jurys VAE. Met en avant les éléments de son CV pertinents (direction, formation, jurys). N'invente rien. Aucun crochet. Signature : ${who()}. CV : ${cvText().slice(0,2000)}`,out,null)}
+$('#dreetsMsg').onclick=()=>institMsg('dreets');$('#rectoMsg').onclick=()=>institMsg('recto');
+
+/* pipeline */
+function addProspect(p){const x={id:'p'+Date.now().toString(36)+Math.random().toString(36).slice(2,5),kind:p.kind,ref:p.ref,nom:p.nom,url:p.url||'',lieu:p.lieu||'',contact:'',notes:'',status:'contacter',created:Date.now(),next:today0()+9*3600e3};
+  if(!(db&&uid)){prospects.push(x);lsP();showIp()}saveP(x);toast('Ajouté au pipeline')}
+function lsP(){ls('ld_pros',JSON.stringify(prospects))}
+async function saveP(p){if(db&&uid){try{await db.doc(`data/users/${uid}/profil/prospects/${p.id}`).set(p)}catch(e){toast('Enregistrement impossible')}}else{lsP();renderPipe();indNav()}}
+async function delP(p){if(db&&uid){try{await db.doc(`data/users/${uid}/profil/prospects/${p.id}`).delete()}catch(e){toast('Suppression impossible')}}else{prospects=prospects.filter(x=>x!==p);lsP();renderPipe();indNav()}}
+const pActive=p=>!['gagne','refus'].includes(p.status);
+const pDue=p=>pActive(p)&&p.next&&p.next<today0()+DAY;
+function renderPipe(){const P=$('#ppipe');P.innerHTML='';const counts={};prospects.forEach(p=>counts[p.status]=(counts[p.status]||0)+1);
+  [['','Tous',prospects.length],['due','À faire aujourd\'hui',prospects.filter(pDue).length],...Object.entries(PST).map(([k,v])=>[k,v,counts[k]||0])].forEach(([k,v,n])=>
+    P.append(h('button',{'aria-pressed':String(ppFilter===k),onclick:()=>{ppFilter=k;renderPipe()}},h('b',{text:n,style:k==='due'&&n?'color:var(--signal)':''}),h('span',{text:v}))));
+  const L=$('#pList');L.innerHTML='';
+  const list=prospects.filter(p=>!ppFilter||(ppFilter==='due'?pDue(p):p.status===ppFilter)).sort((a,b)=>(pActive(b)-pActive(a))||((a.next||9e15)-(b.next||9e15)));
+  if(!list.length)L.append(h('div',{class:'empty-state'},prospects.length?'Rien dans cette catégorie.':'Votre pipeline est vide. Ajoutez des missions, des organismes ou des certificateurs avec « Ajouter au pipeline ».'));
+  list.forEach(p=>{
+    const sel=h('select',{'aria-label':'Statut'},...Object.entries(PST).map(([k,v])=>h('option',{value:k,text:v})));sel.value=p.status;
+    sel.onchange=()=>{p.status=sel.value;p.next=p.status==='contacte'||p.status==='envoye'?today0()+7*DAY:p.status==='relancer'?today0()+9*3600e3:pActive(p)?p.next:null;saveP(p)};
+    const when=h('input',{type:'datetime-local','aria-label':'Prochaine action'});if(p.next)when.value=toLocalInput(p.next);when.onchange=()=>{p.next=when.value?new Date(when.value).getTime():null;saveP(p)};
+    const contact=h('input',{placeholder:'Contact : nom, e-mail, téléphone','aria-label':'Contact'});contact.value=p.contact||'';contact.onchange=()=>{p.contact=contact.value;saveP(p)};
+    const notes=h('textarea',{rows:'2',placeholder:'Notes','aria-label':'Notes'});notes.value=p.notes||'';notes.onchange=()=>{p.notes=notes.value;saveP(p)};
+    const out=h('div',{class:'out empty',text:'Le message de suivi apparaîtra ici.'});const b=h('button',{class:'btn sm'},'Message de suivi (IA)');
+    b.onclick=()=>ask(`Rédige le prochain message adapté à l'étape de cette démarche d'une consultante indépendante (prospection d'organisme de formation, candidature de jurée ou d'évaluatrice auprès d'un certificateur, ou réponse à une mission). Court, professionnel, prêt à envoyer (aucun crochet), objet inclus si e-mail. N'invente rien.
+Type : ${PKIND[p.kind]} · Nom : ${p.nom} · Contact : ${p.contact||'inconnu'} · Étape : ${PST[p.status]} · Ajouté le ${fmtD(p.created)} · Notes : ${p.notes||'aucune'}
+Son offre : ${OFFRE_PRESTA_get()}
+Signature : ${who()}`,out,b,{tier:'quick'});
+    const due=pDue(p);
+    L.append(h('article',{class:'app','data-s':p.status==='gagne'?'entretien':p.status==='refus'?'refus':p.status==='rdv'?'entretien':due?'relancer':'envoyee'},
+      h('div',{style:'min-width:0'},h('span',{class:'tag mut',text:PKIND[p.kind]}),h('h3',{text:p.nom,style:'margin:6px 0 0;font-family:var(--body);font-size:16px'}),
+        h('div',{class:due?'due':'next',style:'margin-top:6px'},pActive(p)&&p.next?`${due?'À faire : ':''}prochaine action le ${fmtDT(p.next)}`:PST[p.status]),
+        safeUrl(p.url)?h('a',{href:p.url,target:'_blank',rel:'noopener',style:'color:var(--accent);font-size:13px'},'voir l\'offre'):null),
+      h('div',{class:'f',style:'gap:6px'},sel,pActive(p)?when:null),
+      h('details',null,h('summary',null,'Contact, notes, message de suivi'),h('div',{class:'f mt'},contact,notes,h('div',{class:'toolbar'},b,h('button',{class:'btn ghost sm',onclick:()=>copy(out.textContent)},'Copier'),h('button',{class:'btn ghost sm',onclick:()=>delP(p)},'Retirer du pipeline')),out))));
+  });
+  const n=prospects.filter(pDue).length,k=$('#kDue');if(k)k.title=`dont ${n} en indépendante`;
+}
+try{prospects=JSON.parse(ls('ld_pros')||'[]')}catch(e){prospects=[]}
+window.__dbReady=()=>{db.collection(`data/users/${uid}/profil/prospects`).onSnapshot(s=>{prospects=s.docs.map(x=>({id:x.id,...x.data()}));indNav();if(!$('section[data-p="indep"]').hidden)showIp()},()=>{})};
+if(db&&uid)window.__dbReady();
+window.__offresReady=()=>{indNav();if(!$('section[data-p="indep"]').hidden)showIp()};
+showIp();
+$('nav.tabs button[data-t="indep"]').addEventListener('click',()=>showIp());
+</script>
+
+<script>
+(function(){
+  const hint=()=>{const k=window.LD_getKey();$('#aiKeyHint').textContent=k?'Clé enregistrée : la rédaction automatique est active.':'Aucune clé : la rédaction automatique est désactivée.'};
+  $('#aiKeySave').onclick=()=>{const v=$('#aiKey').value.trim();if(!/^sk-ant-/.test(v)){toast('Cette clé ne ressemble pas à une clé Anthropic (sk-ant-...)');return}window.LD_setKey(v);$('#aiKey').value='';hint();toast('Clé enregistrée')};
+  $('#aiKeyDel').onclick=()=>{window.LD_setKey('');hint();toast('Clé retirée')};hint();
+  const KEYS=['ld_profil','ld_apps2','ld_pros','ld_ats','ld_f3'];
+  $('#bkExport').onclick=()=>{const d={app:'ligne-directe',date:new Date().toISOString()};KEYS.forEach(k=>{try{d[k]=localStorage.getItem(k)}catch(e){}});
+    window.LD_download.save({filename:'sauvegarde-ligne-directe-'+new Date().toISOString().slice(0,10)+'.json',data:JSON.stringify(d)});toast('Sauvegarde téléchargée')};
+  $('#bkImport').onchange=async e=>{const f=e.target.files[0];if(!f)return;try{const d=JSON.parse(await f.text());if(d.app!=='ligne-directe')throw 0;
+    KEYS.forEach(k=>{if(d[k]!=null)localStorage.setItem(k,d[k])});toast('Sauvegarde importée');setTimeout(()=>location.reload(),800)}catch(err){toast('Ce fichier n\'est pas une sauvegarde Ligne Directe')}};
+})();
+</script>
+
+</body>
+</html>

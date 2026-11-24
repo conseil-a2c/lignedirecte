@@ -1,0 +1,264 @@
+[
+ {
+  "mots": "conseiller insertion",
+  "dept": "06",
+  "jours": 7
+ },
+ {
+  "mots": "examens",
+  "dept": "06",
+  "jours": 31,
+  "max": 15,
+  "salaire": true,
+  "piste": "cfa"
+ },
+ {
+  "mots": "directeur administratif",
+  "dept": "06",
+  "jours": 14,
+  "max": 20,
+  "salaire": true,
+  "piste": "dg"
+ },
+ {
+  "mots": "directeur d'agence",
+  "dept": "06",
+  "jours": 14,
+  "max": 30,
+  "salaire": true,
+  "piste": "dg"
+ },
+ {
+  "mots": "CFA",
+  "dept": "06",
+  "jours": 21,
+  "max": 30,
+  "salaire": true,
+  "piste": "cfa"
+ },
+ {
+  "mots": "directeur CFA",
+  "dept": "13",
+  "jours": 21,
+  "max": 20,
+  "salaire": true,
+  "piste": "cfa"
+ },
+ {
+  "mots": "directeur CFA",
+  "dept": "83",
+  "jours": 21,
+  "max": 15,
+  "salaire": true,
+  "piste": "cfa"
+ },
+ {
+  "mots": "directeur CFA",
+  "dept": "",
+  "jours": 21,
+  "max": 40,
+  "salaire": true,
+  "piste": "cfa"
+ },
+ {
+  "mots": "directeur d'établissement",
+  "dept": "06",
+  "jours": 14,
+  "max": 30,
+  "salaire": true,
+  "piste": "dg"
+ },
+ {
+  "mots": "directeur des études",
+  "dept": "06",
+  "jours": 21,
+  "max": 20,
+  "salaire": true,
+  "piste": "cfa"
+ },
+ {
+  "mots": "directeur d'exploitation",
+  "dept": "06",
+  "jours": 14,
+  "max": 30,
+  "salaire": true,
+  "piste": "dg"
+ },
+ {
+  "mots": "directeur des formations",
+  "dept": "06",
+  "jours": 21,
+  "max": 20,
+  "salaire": true,
+  "piste": "cfa"
+ },
+ {
+  "mots": "directeur général",
+  "dept": "06",
+  "jours": 14,
+  "max": 30,
+  "salaire": true,
+  "piste": "dg"
+ },
+ {
+  "mots": "directeur logistique",
+  "dept": "06",
+  "jours": 14,
+  "max": 30,
+  "salaire": true,
+  "piste": "dg"
+ },
+ {
+  "mots": "directeur des opérations",
+  "dept": "06",
+  "jours": 14,
+  "max": 30,
+  "salaire": true,
+  "piste": "dg"
+ },
+ {
+  "mots": "directeur de production",
+  "dept": "06",
+  "jours": 14,
+  "max": 30,
+  "salaire": true,
+  "piste": "dg"
+ },
+ {
+  "mots": "directeur de site",
+  "dept": "06",
+  "jours": 14,
+  "max": 30,
+  "salaire": true,
+  "piste": "dg"
+ },
+ {
+  "mots": "directeur",
+  "dept": "MC",
+  "jours": 14,
+  "max": 60,
+  "salaire": true,
+  "piste": "dg"
+ },
+ {
+  "mots": "directeur adjoint",
+  "dept": "06",
+  "jours": 7
+ },
+ {
+  "mots": "directeur",
+  "dept": "MC",
+  "jours": 7
+ },
+ {
+  "mots": "évaluateur formation",
+  "dept": "",
+  "jours": 31,
+  "contrats": "CDI,CDD,MIS,LIB"
+ },
+ {
+  "mots": "formateur indépendant",
+  "dept": "",
+  "jours": 14,
+  "contrats": "CDI,CDD,MIS,LIB"
+ },
+ {
+  "mots": "formateur",
+  "dept": "06",
+  "jours": 7
+ },
+ {
+  "mots": "jury",
+  "dept": "",
+  "jours": 31,
+  "contrats": "CDI,CDD,MIS,LIB"
+ },
+ {
+  "mots": "formateur management",
+  "dept": "",
+  "jours": 31,
+  "contrats": "LIB"
+ },
+ {
+  "mots": "formateur",
+  "dept": "06",
+  "jours": 31,
+  "contrats": "LIB"
+ },
+ {
+  "mots": "formateur",
+  "dept": "13",
+  "jours": 31,
+  "contrats": "LIB"
+ },
+ {
+  "mots": "formateur",
+  "dept": "83",
+  "jours": 31,
+  "contrats": "LIB"
+ },
+ {
+  "mots": "manager",
+  "dept": "MC",
+  "jours": 14,
+  "max": 40,
+  "salaire": true,
+  "piste": "dg"
+ },
+ {
+  "mots": "opérations",
+  "dept": "MC",
+  "jours": 14,
+  "max": 30,
+  "salaire": true,
+  "piste": "dg"
+ },
+ {
+  "mots": "relations entreprises",
+  "dept": "06",
+  "jours": 7
+ },
+ {
+  "mots": "responsable de site",
+  "dept": "06",
+  "jours": 14,
+  "max": 20,
+  "salaire": true,
+  "piste": "dg"
+ },
+ {
+  "mots": "responsable pédagogique",
+  "dept": "06",
+  "jours": 7
+ },
+ {
+  "mots": "responsable",
+  "dept": "MC",
+  "jours": 14,
+  "max": 40,
+  "salaire": true,
+  "piste": "dg"
+ },
+ {
+  "mots": "surveillant examen",
+  "dept": "",
+  "jours": 31,
+  "contrats": "CDI,CDD,MIS,LIB"
+ },
+ {
+  "mots": "télétravail",
+  "dept": "",
+  "max": 300
+ },
+ {
+  "mots": "",
+  "dept": "06",
+  "max": 600
+ },
+ {
+  "mots": "",
+  "dept": "MC",
+  "jours": 7,
+  "max": 200
+ }
+]
